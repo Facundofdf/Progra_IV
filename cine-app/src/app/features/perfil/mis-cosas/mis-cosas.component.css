@@ -1,0 +1,190 @@
+.mis-cosas-container {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    color: white;
+}
+
+.cargando {
+    text-align: center;
+    color: #aaa;
+    padding: 3rem;
+}
+
+/* BILLETERA */
+.billetera-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+.tarjeta-billetera {
+    padding: 2rem;
+    border-radius: 12px;
+    border: 1px solid #333;
+    text-align: center;
+}
+
+.tarjeta-billetera h3 {
+    margin-top: 0;
+    color: #ccc;
+    font-size: 1.1rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.tarjeta-billetera p {
+    color: #888;
+    font-size: 0.9rem;
+    margin-bottom: 0;
+}
+
+.valor {
+    font-size: 3.5rem;
+    font-weight: bold;
+    margin: 1rem 0;
+}
+
+.valor small {
+    font-size: 1.5rem;
+    color: #aaa;
+}
+
+.puntos {
+    background: linear-gradient(145deg, #2a2a2a, #1a1a1a);
+    border-color: #fbc02d;
+}
+
+.puntos .valor {
+    color: #fbc02d;
+}
+
+.credito {
+    background: linear-gradient(145deg, #1e3a1e, #112211);
+    border-color: #4CAF50;
+}
+
+.credito .valor {
+    color: #4CAF50;
+}
+
+.divisor {
+    border-color: #333;
+    margin: 1rem 0;
+    width: 100%;
+}
+
+/* LAYOUT INFERIOR */
+.layout-inferior {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+}
+
+@media (max-width: 800px) {
+    .layout-inferior {
+        grid-template-columns: 1fr;
+    }
+}
+
+h2 {
+    color: #fbc02d;
+    margin-bottom: 1.5rem;
+    font-size: 1.5rem;
+}
+
+.mensaje-vacio {
+    padding: 2rem;
+    background: #2a2a2a;
+    border-radius: 8px;
+    text-align: center;
+    color: #aaa;
+}
+
+/* CANJES */
+.lista-canjes {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.item-canje {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #2a2a2a;
+    padding: 1rem 1.5rem;
+    border-radius: 8px;
+    border-left: 4px solid #fbc02d;
+}
+
+.canje-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+}
+
+.fecha {
+    font-size: 0.85rem;
+    color: #aaa;
+}
+
+.puntos-gastados {
+    color: #f44336;
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+/* ALERTAS */
+.grid-alertas {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.card-alerta {
+    display: flex;
+    background: #2a2a2a;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid #444;
+}
+
+.card-alerta img {
+    width: 80px;
+    object-fit: cover;
+}
+
+.info-alerta {
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.info-alerta h4 {
+    margin: 0 0 0.5rem 0;
+    font-size: 1.1rem;
+}
+
+.info-alerta p {
+    color: #2196F3;
+    font-weight: bold;
+    margin: 0 0 1rem 0;
+    font-size: 0.9rem;
+}
+
+.btn-eliminar {
+    background: transparent;
+    color: #f44336;
+    border: 1px solid #f44336;
+    padding: 0.4rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: 0.2s;
+    align-self: flex-start;
+}
+
+.btn-eliminar:hover {
+    background: rgba(244, 67, 54, 0.1);
+}

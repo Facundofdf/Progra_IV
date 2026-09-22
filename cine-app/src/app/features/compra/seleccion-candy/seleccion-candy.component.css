@@ -1,0 +1,256 @@
+.cargando {
+    text-align: center;
+    color: white;
+    padding: 5rem;
+    font-size: 1.5rem;
+}
+
+.compra-layout {
+    display: flex;
+    gap: 2rem;
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+    align-items: flex-start;
+    flex-wrap: wrap;
+}
+
+.candy-container {
+    flex: 1;
+    min-width: 700px;
+    background: #121212;
+    padding: 2rem;
+    border-radius: 12px;
+    border: 1px solid #333;
+}
+
+.btn-volver {
+    background: none;
+    border: none;
+    color: #aaa;
+    cursor: pointer;
+    font-size: 1rem;
+    padding: 0;
+    margin-bottom: 1rem;
+}
+
+.btn-volver:hover {
+    color: white;
+    text-decoration: underline;
+}
+
+h2 {
+    color: #fbc02d;
+    margin: 0;
+}
+
+.subtitulo {
+    color: #aaa;
+    margin-bottom: 2rem;
+    border-bottom: 1px solid #333;
+    padding-bottom: 1rem;
+}
+
+h3 {
+    color: white;
+    margin-bottom: 1rem;
+}
+
+/* GRILLAS CANDY */
+.grid-candy {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.card-candy {
+    background: #1e1e1e;
+    border: 1px solid #333;
+    border-radius: 8px;
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: 0.2s;
+}
+
+.card-candy:hover {
+    border-color: #555;
+}
+
+/* COMBOS DESTACADOS */
+.seccion-destacada h3 {
+    color: #fbc02d;
+}
+
+.card-candy.combo {
+    border: 2px solid #fbc02d;
+    background: rgba(251, 192, 45, 0.05);
+}
+
+.candy-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+}
+
+.candy-info h4 {
+    margin: 0;
+    color: white;
+    font-size: 1.1rem;
+}
+
+.precio {
+    color: #4CAF50;
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+.controles {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background: #2a2a2a;
+    padding: 0.3rem;
+    border-radius: 6px;
+}
+
+.controles button {
+    background: #444;
+    color: white;
+    border: none;
+    width: 30px;
+    height: 30px;
+    border-radius: 4px;
+    font-weight: bold;
+    font-size: 1.2rem;
+    cursor: pointer;
+}
+
+.controles button:not(:disabled):hover {
+    background: #fbc02d;
+    color: black;
+}
+
+.controles button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.controles span {
+    font-weight: bold;
+    color: white;
+    width: 20px;
+    text-align: center;
+}
+
+/* ETIQUETAS */
+.badge {
+    align-self: flex-start;
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+.bebidas {
+    background: #2196F3;
+    color: #fff;
+}
+
+.golosinas {
+    background: #9C27B0;
+    color: #fff;
+}
+
+.pochoclos {
+    background: #FFC107;
+    color: #000;
+}
+
+/* RESUMEN LATERAL (Mismos estilos que butacas adaptados) */
+.resumen-container {
+    width: 320px;
+    background: #1e1e1e;
+    padding: 1.5rem;
+    border-radius: 12px;
+    border: 1px solid #333;
+    position: sticky;
+    top: 2rem;
+}
+
+.ticket-resumen h3 {
+    margin: 0 0 1.5rem 0;
+    color: white;
+    text-align: center;
+    border-bottom: 1px dashed #555;
+    padding-bottom: 1rem;
+}
+
+.bloque-resumen h4 {
+    color: #fbc02d;
+    margin: 0 0 1rem 0;
+}
+
+.item-resumen {
+    display: flex;
+    justify-content: space-between;
+    color: #ccc;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.subtotal {
+    text-align: right;
+    color: #aaa;
+    font-weight: bold;
+    font-size: 0.9rem;
+    margin-top: 0.5rem;
+}
+
+.vacio-candy {
+    color: #888;
+    font-size: 0.9rem;
+    font-style: italic;
+}
+
+hr {
+    border-color: #333;
+    margin: 1.5rem 0;
+}
+
+.total-compra {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: white;
+    margin-bottom: 1.5rem;
+}
+
+.monto-total {
+    color: #4CAF50;
+    font-size: 1.8rem;
+}
+
+.btn-continuar {
+    width: 100%;
+    padding: 1rem;
+    background: #fbc02d;
+    color: black;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.btn-continuar:hover {
+    background: #ffeb3b;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(251, 192, 45, 0.3);
+}

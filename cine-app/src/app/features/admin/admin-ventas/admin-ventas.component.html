@@ -1,0 +1,45 @@
+<div class="admin-section">
+    <h2>🎟️ Historial de Ventas</h2>
+    <p class="subtitulo">Registro general de entradas y consumos de Candy Bar.</p>
+
+    <div class="tabla-container" *ngIf="!cargando()">
+        <table class="tabla-ventas" *ngIf="ventasCargadas().length > 0; else sinVentas">
+            <thead>
+                <tr>
+                    <th>Fecha y Hora</th>
+                    <th>Cliente</th>
+                    <th>Email</th>
+                    <th>Método de Pago</th>
+                    <th>Total Cobrado</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let venta of ventasCargadas()">
+                    <!-- Formateamos la fecha directamente con Angular -->
+                    <td>{{ venta.created_at | date:'dd/MM/yyyy HH:mm' }}</td>
+
+                    <!-- Si el usuario completó su nombre, lo mostramos. Sino, mostramos "Cliente Anónimo" -->
+                    <td>{{ venta.perfiles?.nombre ? (venta.perfiles?.nombre + ' ' + venta.perfiles?.apellido) :
+                        'Consumidor Final' }}</td>
+
+                    <td>{{ venta.perfiles?.email || 'N/A' }}</td>
+
+                    <td><span class="badge-pago">{{ venta.metodo_pago || 'MercadoPago' }}</span></td>
+
+                    <td class="monto-total"><b>${{ venta.total }}</b></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <ng-template #sinVentas>
+            <div class="mensaje-vacio">
+                <p>Aún no hay ventas registradas en el sistema.</p>
+                <small>Las compras de los clientes aparecerán aquí automáticamente.</small>
+            </div>
+        </ng-template>
+    </div>
+
+    <div *ngIf="cargando()" class="mensaje-vacio">
+        Cargando historial de ventas...
+    </div>
+</div>

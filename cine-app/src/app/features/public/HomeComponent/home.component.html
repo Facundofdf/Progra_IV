@@ -1,0 +1,78 @@
+<div class="home-container">
+
+    <!-- SECCIÓN 1: DESTACADAS / MÁS VENDIDAS -->
+    <section class="hero-section">
+        <h2 class="section-title">🔥 Top 3: Las Más Elegidas</h2>
+        <div class="destacadas-grid">
+            <div class="card-destacada" *ngFor="let p of peliculasDestacadas()">
+                <!-- Si no tiene poster, mostramos un recuadro oscuro -->
+                <img [src]="p.imagen_poster || 'https://via.placeholder.com/400x600/111/fff?text=Sin+Poster'"
+                    alt="Poster">
+                <div class="info-overlay">
+                    <h3>{{ p.titulo }}</h3>
+                    <span class="badge" *ngIf="p.estado === 'preventa'">PREVENTA</span>
+                    <!-- El botón "Comprar" nos llevará más adelante al detalle -->
+                    <button class="btn-primary" [routerLink]="['/pelicula', p.id]">Ver Funciones</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECCIÓN 2: CARTELERA Y BUSCADOR -->
+    <section class="cartelera-section">
+        <div class="cartelera-header">
+            <h2 class="section-title">🍿 En Cartelera</h2>
+
+            <!-- BUSCADOR (Cumpliendo el requisito del TP) -->
+            <div class="filtros-container">
+                <input type="text" placeholder="Buscar película..." [ngModel]="textoBusqueda()"
+                    (ngModelChange)="textoBusqueda.set($event)" class="search-input">
+
+                <select [ngModel]="generoSeleccionado()" (ngModelChange)="generoSeleccionado.set($event)"
+                    class="genre-select">
+                    <option value="">Todos los géneros</option>
+                    <option *ngFor="let g of generosDisponibles()" [value]="g.id">{{ g.nombre }}</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- LISTADO FILTRADO -->
+        <div class="grid-peliculas">
+            <div class="card-pelicula" *ngFor="let p of peliculasCartelera()">
+                <img [src]="p.imagen_poster || 'https://via.placeholder.com/300x450/111/fff?text=Sin+Poster'"
+                    alt="Poster">
+                <div class="peli-detalles">
+                    <h4>{{ p.titulo }}</h4>
+                    <p class="restriccion">{{ p.restriccion_edad }} • {{ p.duracion_minutos }} min</p>
+                    <div class="etiquetas">
+                        <span class="tag" *ngFor="let pg of p.peliculas_generos">{{ pg.generos.nombre }}</span>
+                    </div>
+                    <button class="btn-comprar" [routerLink]="['/pelicula', p.id]">Comprar Entradas</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="mensaje-vacio" *ngIf="peliculasCartelera().length === 0">
+            No encontramos películas con esos filtros. 😢
+        </div>
+    </section>
+
+    <hr class="divisor">
+
+    <!-- SECCIÓN 3: PRÓXIMAMENTE -->
+    <section class="proximamente-section" *ngIf="peliculasProximamente().length > 0">
+        <h2 class="section-title">🔜 Próximamente</h2>
+        <div class="grid-peliculas">
+            <div class="card-pelicula opaca" *ngFor="let p of peliculasProximamente()">
+                <img [src]="p.imagen_poster || 'https://via.placeholder.com/300x450/111/fff?text=Sin+Poster'"
+                    alt="Poster">
+                <div class="peli-detalles">
+                    <h4>{{ p.titulo }}</h4>
+                    <p *ngIf="p.fecha_estreno" class="estreno">Estreno: {{ p.fecha_estreno | date:'dd/MM/yyyy' }}</p>
+                    <button class="btn-alerta" (click)="activarAlerta(p)">🔔 Avisarme</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</div>

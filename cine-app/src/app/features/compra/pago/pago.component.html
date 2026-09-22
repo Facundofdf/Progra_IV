@@ -1,0 +1,133 @@
+<!-- PASO 1: CHECKOUT -->
+<div class="pago-layout no-imprimir" *ngIf="paso() === 'checkout'">
+
+    <main class="panel-pago">
+        <h2>💳 Finalizar Compra</h2>
+        <p style="color:#aaa">Ingresá tus datos de pago para confirmar las entradas.</p>
+
+        <!-- FORMULARIO DE PAGO FALSO (Visual) -->
+        <div class="tarjeta-form">
+            <div class="input-group">
+                <label>Número de Tarjeta</label>
+                <input type="text" placeholder="XXXX XXXX XXXX XXXX">
+            </div>
+            <div class="row">
+                <div class="input-group">
+                    <label>Vencimiento</label>
+                    <input type="text" placeholder="MM/AA">
+                </div>
+                <div class="input-group">
+                    <label>Cód. Seguridad (CVV)</label>
+                    <input type="text" placeholder="123">
+                </div>
+            </div>
+            <div class="input-group">
+                <label>Nombre en la tarjeta</label>
+                <input type="text" placeholder="Como figura en el plástico">
+            </div>
+        </div>
+    </main>
+
+    <aside class="resumen-final">
+        <h3>Resumen de Compra</h3>
+
+        <div class="subtotales">
+            <p>Subtotal: <span>${{ calcularSubtotal() }}</span></p>
+
+            <!-- DESCUENTO 20% PRIMERA COMPRA -->
+            <div class="alerta-exito" *ngIf="esPrimeraCompra()">
+                🎉 ¡Tenés 20% de descuento por ser tu primera compra!
+            </div>
+            <p class="descuento" *ngIf="esPrimeraCompra()">
+                Descuento Primera Compra: <span>-${{ calcularSubtotal() * 0.2 }}</span>
+            </p>
+
+            <!-- CUPÓN (Solo si NO es primera compra) -->
+            <div class="cupon-caja" *ngIf="!esPrimeraCompra()">
+                <div style="display: flex; gap: 0.5rem;">
+                    <input type="text" placeholder="¿Tenés un cupón?" [(ngModel)]="codigoCupon">
+                    <button class="btn-cupon" (click)="aplicarCupon()">Aplicar</button>
+                </div>
+                <small [ngClass]="{'texto-error': mensajeCupon().error, 'texto-exito': !mensajeCupon().error}"
+                    *ngIf="mensajeCupon().texto">
+                    {{ mensajeCupon().texto }}
+                </small>
+            </div>
+            <p class="descuento" *ngIf="cuponAplicado()">
+                Descuento (-{{ cuponAplicado().porcentaje_descuento }}%):
+                <span>-${{ (calcularSubtotal() * cuponAplicado().porcentaje_descuento / 100) }}</span>
+            </p>
+
+            <!-- CANJEAR PUNTOS -->
+            <div class="puntos-caja" *ngIf="perfilUsuario()">
+                <p class="saldo-puntos">Tus Puntos: <b>{{ perfilUsuario().puntos }}</b></p>
+                <button class="btn-canje" (click)="canjearEntradaConPuntos()" [disabled]="puntosAGastar() > 0">
+                    ⭐ Canjear 1 Entrada ({{ configFidelizacion()?.puntos_por_entrada || 500 }} pts)
+                </button>
+            </div>
+            <p class="descuento" *ngIf="puntosAGastar() > 0">
+                Canje de Puntos: <span>-${{ descuentoPorPuntos() }}</span>
+            </p>
+
+            <!-- USAR CRÉDITO A FAVOR -->
+            <div class="credito-caja" *ngIf="perfilUsuario() && perfilUsuario().credito > 0">
+                <label>
+                    <input type="checkbox" [ngModel]="usarCredito()" (ngModelChange)="usarCredito.set($event)">
+                    Usar Crédito a favor (${{ perfilUsuario().credito }})
+                </label>
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="total-pagar">
+            <span>Total a Pagar:</span>
+            <span class="monto-verde">${{ calcularTotalPagar() }}</span>
+        </div>
+
+        <button class="btn-pagar" (click)="confirmarPago()">Pagar Ahora</button>
+        <p class="aviso-puntos" *ngIf="perfilUsuario()">Sumarás {{ calcularTotalPagar() | number:'1.0-0' }} puntos con
+            esta compra.</p>
+    </aside>
+
+</div>
+
+<!-- PASO 2: PANTALLA DE CARGA -->
+<div class="cargando no-imprimir" *ngIf="paso() === 'procesando'">
+    <h2>Procesando tu pago... 💳</h2>
+    <p>Por favor, no cierres esta ventana.</p>
+</div>
+
+<!-- PASO 3: TICKET DE ÉXITO (Se usa para el PDF) -->
+<div class="exito-layout" *ngIf="paso() === 'exito'">
+
+    <div class="acciones-exito no-imprimir">
+        <h2>¡Pago Exitoso! 🎉</h2>
+        <p>Mostrá este código desde tu celular o descargá el PDF para ingresar al cine y retirar tu Candy.</p>
+
+        <div style="display:flex; gap:1rem; justify-content: center; margin-top: 1rem;">
+            <button class="btn-descargar" (click)="descargarPDF()">📄 Descargar PDF</button>
+            <button class="btn-inicio" (click)="volverAlInicio()">Volver a Cartelera</button>
+        </div>
+    </div>
+
+    <!-- ESTE ES EL TICKET QUE SE VA A IMPRIMIR/GUARDAR EN PDF -->
+    <div class="ticket-imprimible">
+        <div class="ticket-header">
+            <h2>CINEMA APP</h2>
+            <p>Entrada Oficial</p>
+        </div>
+
+        <div class="ticket-body">
+            <!-- API pública que nos dibuja el QR mágico al instante -->
+            <img class="qr-code"
+                [src]="'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' + codigoTicketFinal()"
+                alt="QR Code">
+            <p class="codigo-manual">CÓDIGO: {{ codigoTicketFinal() }}</p>
+            <hr>
+            <p><strong>IMPORTANTE:</strong> Este código QR es único. Una vez validado en la entrada o en la caja del
+                Candy Bar, dejará de funcionar.</p>
+        </div>
+    </div>
+
+</div>

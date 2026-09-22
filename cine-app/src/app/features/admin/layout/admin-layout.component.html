@@ -1,0 +1,22 @@
+<div class="admin-layout">
+    <!-- Menú Lateral Fijo -->
+    <aside class="sidebar">
+        <h2>Panel Admin</h2>
+        <nav>
+            <a routerLink="/admin/peliculas" routerLinkActive="active-link">🍿 Películas</a>
+            <a routerLink="/admin/funciones" routerLinkActive="active-link">🕒 Funciones</a>
+            <a routerLink="/admin/cupones" routerLinkActive="active-link">🎟️ Cupones</a>
+            <a routerLink="/admin/generos" routerLinkActive="active-link">🏷️ Géneros</a>
+            <a routerLink="/admin/candy" routerLinkActive="active-link">🥤 Candy Bar</a>
+            <a routerLink="/admin/ventas" routerLinkActive="active-link">🎟️ Ventas</a>
+            <a routerLink="/admin/metricas" routerLinkActive="active-link">📊 Métricas</a>
+            <a routerLink="/admin/logs" routerLinkActive="active-link">📝 Logs</a>
+            <a routerLink="/admin/fidelizacion" routerLinkActive="active-link">🎁 Fidelización</a>
+        </nav>
+    </aside>
+
+    <!-- Contenido Dinámico Central -->
+    <main class="content">
+        <router-outlet></router-outlet>
+    </main>
+</div>

@@ -1,0 +1,142 @@
+.admin-section {
+    padding: 1rem;
+    color: #fff;
+}
+
+.subtitulo {
+    color: #aaa;
+    margin-bottom: 2rem;
+}
+
+.tabla-container {
+    background: #1e1e1e;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid #333;
+    overflow-x: auto;
+}
+
+.tabla-logs {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.tabla-logs th {
+    background: #2c2c2c;
+    padding: 1.2rem 1rem;
+    font-weight: bold;
+    color: #fbc02d;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    border-bottom: 2px solid #444;
+}
+
+.tabla-logs td {
+    padding: 1rem;
+    border-bottom: 1px solid #333;
+    color: #ccc;
+    vertical-align: top;
+}
+
+.tabla-logs tbody tr:hover {
+    background: #252525;
+}
+
+.fecha {
+    white-space: nowrap;
+    font-family: monospace;
+    font-size: 0.9rem;
+}
+
+.email-texto {
+    color: #888;
+}
+
+.badge-modulo {
+    background: #555;
+    color: white;
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+}
+
+/* Colores dinámicos para las acciones (INSERT, UPDATE, DELETE) */
+.badge-accion {
+    padding: 0.3rem 0.6rem;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.INSERT,
+.crear,
+.CREAR {
+    background: #4CAF50;
+    color: white;
+}
+
+.UPDATE,
+.actualizar,
+.ACTUALIZAR {
+    background: #2196F3;
+    color: white;
+}
+
+.DELETE,
+.eliminar,
+.ELIMINAR {
+    background: #F44336;
+    color: white;
+}
+
+.detalles-json pre {
+    margin: 0;
+    background: #111;
+    padding: 0.5rem;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    color: #a5d6ff;
+    max-width: 300px;
+    overflow-x: auto;
+}
+
+.mensaje-vacio {
+    text-align: center;
+    padding: 3rem;
+    color: #888;
+}
+
+/* Badges de Acción para Logs */
+.badge-accion {
+    padding: 0.3rem 0.6rem;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+
+/* Clases generadas dinámicamente según el nombre de la acción (Ej: "NUEVA_COMPRA") */
+.NUEVA_COMPRA,
+.CREAR_FUNCION,
+.NUEVA_PELICULA {
+    background: rgba(76, 175, 80, 0.2);
+    color: #4CAF50;
+    border: 1px solid #4CAF50;
+}
+
+.ELIMINAR_COMPRA,
+.CANCELAR,
+.ELIMINAR_PELICULA {
+    background: rgba(244, 67, 54, 0.2);
+    color: #f44336;
+    border: 1px solid #f44336;
+}
+
+.EDITAR_PRECIO,
+.MODIFICAR_FUNCION {
+    background: rgba(255, 152, 0, 0.2);
+    color: #ff9800;
+    border: 1px solid #ff9800;
+}

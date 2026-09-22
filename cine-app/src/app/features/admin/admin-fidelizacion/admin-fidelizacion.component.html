@@ -1,0 +1,55 @@
+<div class="admin-section">
+    <div *ngIf="mensaje().texto" class="alerta" [ngClass]="mensaje().tipo">
+        {{ mensaje().texto }}
+    </div>
+
+    <h2>🎁 Programa de Fidelización</h2>
+    <p class="subtitulo">Configurá las reglas de generación y gasto de puntos del cine.</p>
+
+    <!-- REGLAS GLOBALES -->
+    <div class="admin-card">
+        <h3>Reglas Generales</h3>
+        <form [formGroup]="configForm" (ngSubmit)="guardarConfiguracion()">
+            <div class="form-row">
+
+                <div class="input-group">
+                    <label>Puntos ganados por cada $1 gastado</label>
+                    <input type="number" step="0.1" formControlName="puntos_por_peso">
+                    <small>Ej: 1 significa que si gasta $1500, gana 1500 pts.</small>
+                </div>
+
+                <div class="input-group">
+                    <label>Costo de Entrada Gratis (en puntos)</label>
+                    <input type="number" formControlName="puntos_por_entrada">
+                    <small>Ej: 500 puntos equivale a 1 entrada 2D.</small>
+                </div>
+
+            </div>
+
+            <div class="form-actions mt-2">
+                <button type="submit" class="btn-guardar" [disabled]="configForm.invalid">
+                    Guardar Reglas
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <!-- RECOMPENSAS DEL CANDY BAR -->
+    <div class="admin-card mt-2">
+        <h3>Costo en Puntos (Candy Bar)</h3>
+        <p style="color: #aaa; margin-top: 0;">Para modificar estos valores, ingresá a la sección 🥤 Candy Bar.</p>
+
+        <div class="grid-recompensas">
+            <div class="card-recompensa" *ngFor="let p of productosCandy()">
+                <div>
+                    <span class="badge" [ngClass]="p.categoria">{{ p.categoria }}</span>
+                    <h4>{{ p.nombre }}</h4>
+                </div>
+                <div class="puntos-costo">
+                    🎟️ {{ p.precio_puntos }} pts
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

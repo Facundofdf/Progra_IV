@@ -1,0 +1,142 @@
+<div class="admin-section">
+
+    <!-- Mensajes Globales -->
+    <div *ngIf="mensaje().texto" class="alerta" [ngClass]="mensaje().tipo">
+        {{ mensaje().texto }}
+    </div>
+
+    <h2>🎬 Gestión de Películas</h2>
+
+    <div class="admin-card">
+        <h3>{{ peliculaEditandoId() ? 'Editar Película' : 'Agregar Nueva' }}</h3>
+        <form [formGroup]="peliculaForm" (ngSubmit)="guardarPelicula()">
+            <!-- Fila 1: Título y Duración -->
+            <div class="form-row">
+                <div class="input-group">
+                    <input type="text" formControlName="titulo" placeholder="Título"
+                        [class.input-error]="peliculaForm.get('titulo')?.invalid && peliculaForm.get('titulo')?.touched">
+                </div>
+
+                <div class="input-group">
+                    <input type="number" formControlName="duracion_minutos" placeholder="Duración (min)"
+                        [class.input-error]="peliculaForm.get('duracion_minutos')?.invalid && peliculaForm.get('duracion_minutos')?.touched">
+                </div>
+            </div>
+
+            <!-- Fila 2: Sinopsis y Póster -->
+            <div class="input-group mt-1">
+                <textarea formControlName="sinopsis" placeholder="Sinopsis (opcional)" rows="2"></textarea>
+            </div>
+            <div class="input-group mt-1">
+                <input type="text" formControlName="imagen_poster" placeholder="URL Póster (opcional)">
+            </div>
+
+            <!-- Fila 3: Edad, Estado y Fecha -->
+            <div class="form-row mt-1">
+                <div class="input-group">
+                    <label>Restricción</label>
+                    <select formControlName="restriccion_edad">
+                        <option value="ATP">ATP</option>
+                        <option value="+13">+13 Años</option>
+                        <option value="+18">+18 Años</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label>Estado</label>
+                    <select formControlName="estado">
+                        <option value="disponible">Disponible</option>
+                        <option value="no_disponible">No Disponible</option>
+                        <option value="proximamente">Próximamente</option>
+                        <option value="preventa">En Preventa</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label>Fecha Estreno</label>
+                    <input type="date" formControlName="fecha_estreno">
+                </div>
+            </div>
+
+            <!-- Fila 4: Precios -->
+            <div class="form-row mt-1">
+                <div class="input-group">
+                    <label>Precio Base ($)</label>
+                    <input type="number" formControlName="precio_base" placeholder="0.00">
+                </div>
+                <div class="input-group">
+                    <label>Precio Preventa ($)</label>
+                    <input type="number" formControlName="precio_preventa" placeholder="0.00">
+                </div>
+            </div>
+
+            <!-- Fila 5: Selección Múltiple de Géneros -->
+            <div class="input-group mt-1">
+                <label>Géneros <small>(Mantené presionado Ctrl o Cmd para seleccionar varios)</small></label>
+                <select multiple formControlName="generos" size="4"
+                    [class.input-error]="peliculaForm.get('generos')?.invalid && peliculaForm.get('generos')?.touched">
+                    <option *ngFor="let g of generosDisponibles()" [value]="g.id">{{ g.nombre }}</option>
+                </select>
+                <small class="error-text"
+                    *ngIf="peliculaForm.get('generos')?.invalid && peliculaForm.get('generos')?.touched">
+                    Debes seleccionar al menos un género.
+                </small>
+            </div>
+
+            <div class="advertencia-global" *ngIf="generosDisponibles().length === 0">
+                ⚠️ Debes crear al menos un género en el sistema antes de poder guardar una película.
+            </div>
+
+            <div class="form-actions mt-2">
+                <button type="submit" class="btn-guardar">
+                    {{ peliculaEditandoId() ? 'Actualizar Película' : 'Guardar Película' }}
+                </button>
+                <button type="button" *ngIf="peliculaEditandoId()" (click)="cancelarEdicion()" class="btn-cancelar">
+                    Cancelar
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <div class="admin-card mt-2">
+        <h3>Películas Cargadas</h3>
+        <ul class="lista-items">
+            <li *ngFor="let p of peliculasCargadas()">
+                <div class="info-pelicula">
+                    <!-- Agregamos la restricción de edad al lado de la duración -->
+                    <span class="titulo-peli">
+                        {{ p.titulo }}
+                        <small>({{ p.duracion_minutos }} min | {{ p.restriccion_edad }})</small>
+                    </span>
+
+                    <div class="etiquetas">
+                        <ng-container *ngIf="p.peliculas_generos && p.peliculas_generos.length > 0; else sinGenero">
+                            <span class="genero-tag" *ngFor="let pg of p.peliculas_generos; let isLast=last">
+                                {{ pg.generos.nombre }}{{ !isLast ? ', ' : '' }}
+                            </span>
+                        </ng-container>
+                        <ng-template #sinGenero>
+                            <span class="alerta-genero">⚠️ (Sin género)</span>
+                        </ng-template>
+
+                        <span class="badge badge-estado" [ngClass]="p.estado">{{ p.estado }}</span>
+                    </div>
+
+                    <div class="precios-info">
+                        <small>Base: <b>${{ p.precio_base }}</b> | Preventa: <b>${{ p.precio_preventa }}</b></small>
+                        <br>
+                        <!-- Agregamos la fecha de estreno con el formato de Angular (dd/MM/yyyy) -->
+                        <small *ngIf="p.fecha_estreno">Estreno: <b>{{ p.fecha_estreno | date:'dd/MM/yyyy' }}</b></small>
+                        <small *ngIf="!p.fecha_estreno">Estreno: <i>Sin fecha definida</i></small>
+                    </div>
+                </div>
+
+                <div class="acciones-lista">
+                    <button class="btn-editar" (click)="editarPelicula(p)">Editar</button>
+                    
+                    <button class="btn-eliminar" (click)="eliminarPelicula(p.id)">Eliminar</button>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>

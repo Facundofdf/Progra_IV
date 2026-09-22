@@ -1,0 +1,73 @@
+.admin-section {
+    padding: 1rem;
+    color: #fff;
+}
+
+.subtitulo {
+    color: #aaa;
+    margin-bottom: 2rem;
+}
+
+/* Estilos de Tabla Profesional */
+.tabla-container {
+    background: #1e1e1e;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid #333;
+}
+
+.tabla-ventas {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.tabla-ventas th {
+    background: #2c2c2c;
+    padding: 1.2rem 1rem;
+    font-weight: bold;
+    color: #fbc02d;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
+    border-bottom: 2px solid #444;
+}
+
+.tabla-ventas td {
+    padding: 1rem;
+    border-bottom: 1px solid #333;
+    color: #ccc;
+}
+
+.tabla-ventas tbody tr:hover {
+    background: #252525;
+}
+
+.monto-total {
+    color: #4CAF50 !important;
+    font-size: 1.1rem;
+}
+
+.badge-pago {
+    background: #3f51b5;
+    color: white;
+    padding: 0.3rem 0.6rem;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+
+.mensaje-vacio {
+    text-align: center;
+    padding: 3rem;
+    background: #1e1e1e;
+    border-radius: 8px;
+    border: 1px dashed #444;
+    color: #888;
+}
+
+.mensaje-vacio p {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+    color: #ccc;
+}

@@ -1,0 +1,63 @@
+<div class="cargando" *ngIf="cargando()">Cargando tu información...</div>
+
+<div class="mis-cosas-container" *ngIf="!cargando() && perfil()">
+
+    <!-- BILLETERA: PUNTOS Y CRÉDITO -->
+    <section class="billetera-grid">
+        <div class="tarjeta-billetera puntos">
+            <h3>Puntos Acumulados</h3>
+            <div class="valor">{{ perfil().puntos || 0 }} <small>pts</small></div>
+            <p>Canjealos por entradas o combos del Candy Bar.</p>
+        </div>
+
+        <div class="tarjeta-billetera credito">
+            <h3>Crédito a Favor</h3>
+            <div class="valor"><small>$</small>{{ perfil().credito || 0 }}</div>
+            <p>Saldo disponible de cancelaciones anteriores.</p>
+        </div>
+    </section>
+
+    <hr class="divisor">
+
+    <div class="layout-inferior">
+
+        <!-- HISTORIAL DE CANJES -->
+        <section class="seccion-canjes">
+            <h2>🎁 Historial de Canjes</h2>
+            <div class="mensaje-vacio" *ngIf="historialCanjes().length === 0">
+                Todavía no realizaste ningún canje.
+            </div>
+
+            <div class="lista-canjes" *ngIf="historialCanjes().length > 0">
+                <div class="item-canje" *ngFor="let canje of historialCanjes()">
+                    <div class="canje-info">
+                        <strong>{{ canje.recompensa_obtenida }}</strong>
+                        <span class="fecha">{{ canje.fecha | date:'dd/MM/yyyy' }}</span>
+                    </div>
+                    <div class="puntos-gastados">-{{ canje.puntos_gastados }} pts</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ALERTAS DE ESTRENOS -->
+        <section class="seccion-alertas">
+            <h2>🔔 Mis Alertas</h2>
+            <div class="mensaje-vacio" *ngIf="alertas().length === 0">
+                No estás siguiendo ningún estreno.
+            </div>
+
+            <div class="grid-alertas" *ngIf="alertas().length > 0">
+                <div class="card-alerta" *ngFor="let a of alertas()">
+                    <img [src]="a.peliculas.imagen_poster || 'https://via.placeholder.com/100x150/111/fff?text=Poster'"
+                        alt="Poster">
+                    <div class="info-alerta">
+                        <h4>{{ a.peliculas.titulo }}</h4>
+                        <p>Estreno: {{ a.peliculas.fecha_estreno | date:'dd/MM/yyyy' }}</p>
+                        <button class="btn-eliminar" (click)="eliminarAlerta(a.id)">Dejar de seguir</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+</div>

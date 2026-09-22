@@ -1,0 +1,244 @@
+.cargando {
+    text-align: center;
+    color: white;
+    padding: 5rem;
+    font-size: 1.5rem;
+}
+
+.detalle-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 2rem;
+    color: white;
+}
+
+.hero-pelicula {
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+}
+
+.poster {
+    width: 300px;
+    border-radius: 12px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+    object-fit: cover;
+}
+
+.info-principal {
+    flex: 1;
+    min-width: 300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.info-principal h1 {
+    font-size: 3rem;
+    margin: 0 0 1rem 0;
+    color: #fbc02d;
+}
+
+.meta-tags {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.tag-restriccion {
+    background: #e91e63;
+    padding: 0.3rem 0.8rem;
+    border-radius: 4px;
+    font-weight: bold;
+}
+
+.tag-duracion {
+    background: #333;
+    padding: 0.3rem 0.8rem;
+    border-radius: 4px;
+}
+
+.tag-genero {
+    border: 1px solid #fbc02d;
+    color: #fbc02d;
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+}
+
+.sinopsis {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: #ccc;
+    margin-bottom: 2rem;
+}
+
+.resenas-resumen {
+    background: #1e1e1e;
+    padding: 1rem;
+    border-radius: 8px;
+    border-left: 4px solid #fbc02d;
+}
+
+.resenas-resumen h3 {
+    margin: 0;
+}
+
+.puntaje {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #fbc02d;
+}
+
+.divisor {
+    border-color: #333;
+    margin: 3rem 0;
+}
+
+.grid-funciones {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+}
+
+.card-funcion {
+    background: #1e1e1e;
+    border: 1px solid #333;
+    border-radius: 8px;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    transition: 0.3s;
+}
+
+.card-funcion:hover {
+    border-color: #fbc02d;
+    transform: translateY(-3px);
+}
+
+.horario {
+    display: flex;
+    flex-direction: column;
+    border-bottom: 1px solid #333;
+    padding-bottom: 0.5rem;
+}
+
+.fecha {
+    color: #aaa;
+    font-size: 0.9rem;
+}
+
+.hora {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #2196F3;
+}
+
+.detalles-sala {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.sala,
+.formato,
+.idioma {
+    background: #333;
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.8rem;
+}
+
+.btn-comprar {
+    background: #fbc02d;
+    color: black;
+    border: none;
+    padding: 0.8rem;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    width: 100%;
+    margin-top: auto;
+    transition: 0.2s;
+}
+
+.btn-comprar:hover {
+    background: #ffeb3b;
+}
+
+.mensaje-vacio {
+    padding: 2rem;
+    background: #1e1e1e;
+    color: #aaa;
+    text-align: center;
+    border-radius: 8px;
+}
+
+.card-comentario {
+    background: #1e1e1e;
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    border-left: 2px solid #555;
+}
+
+.comentario-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+    color: #fbc02d;
+}
+
+.barra-filtros {
+    display: flex;
+    gap: 1.5rem;
+    background: #1e1e1e;
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin-bottom: 2rem;
+    border: 1px solid #333;
+    flex-wrap: wrap;
+    align-items: flex-end;
+}
+
+.filtro-grupo {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    flex: 1;
+    min-width: 150px;
+}
+
+.filtro-grupo label {
+    font-size: 0.9rem;
+    color: #fbc02d;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.input-filtro {
+    padding: 0.8rem;
+    background: #333;
+    border: 1px solid #555;
+    color: white;
+    border-radius: 6px;
+    font-family: inherit;
+    color-scheme: dark;
+    outline: none;
+}
+
+.btn-limpiar {
+    padding: 0.8rem 1.5rem;
+    background: transparent;
+    color: #aaa;
+    border: 1px solid #555;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.btn-limpiar:hover {
+    background: #333;
+    color: white;
+}

@@ -1,0 +1,72 @@
+<div class="admin-section">
+    <h2>Gestión de Candy Bar</h2>
+
+    <form [formGroup]="candyForm" (ngSubmit)="guardarProducto()" class="panel-form">
+        <!-- Fila 1: Nombre y Categoría -->
+        <div class="form-row">
+            <div class="input-group">
+                <label>Nombre del Producto / Combo</label>
+                <input type="text" formControlName="nombre" placeholder="Ej: Combo Familiar (2 Entradas + Pochoclos)">
+            </div>
+
+            <div class="input-group">
+                <label>Categoría</label>
+                <select formControlName="categoria">
+                    <option value="pochoclos">Pochoclos</option>
+                    <option value="bebidas">Bebidas</option>
+                    <option value="combos">Combos Especiales</option>
+                    <option value="golosinas">Golosinas</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Fila 2: Precios -->
+        <div class="form-row mt-1">
+            <div class="input-group">
+                <label>Precio en Pesos ($)</label>
+                <input type="number" formControlName="precio_pesos" placeholder="0.00">
+            </div>
+
+            <div class="input-group">
+                <label>Costo en Puntos (Fidelización)</label>
+                <input type="number" formControlName="precio_puntos" placeholder="Ej: 150">
+            </div>
+        </div>
+
+        <div class="form-actions mt-2">
+            <button type="submit" class="btn-guardar">
+                {{ productoEditandoId() ? 'Actualizar Producto' : 'Guardar Producto' }}
+            </button>
+            <button type="button" *ngIf="productoEditandoId()" (click)="cancelarEdicion()" class="btn-cancelar">
+                Cancelar
+            </button>
+        </div>
+    </form>
+
+    <hr class="divisor">
+
+    <h3>Catálogo Actual</h3>
+
+    <div class="grid-productos">
+        <div class="card-producto" *ngFor="let p of productosCargados()">
+            <div class="prod-header">
+                <span class="badge" [ngClass]="p.categoria">{{ p.categoria }}</span>
+                <h4>{{ p.nombre }}</h4>
+            </div>
+
+            <div class="prod-precios">
+                <p><b>$ {{ p.precio_pesos }}</b></p>
+                <p class="puntos">🎟️ {{ p.precio_puntos }} pts</p>
+            </div>
+
+            <div class="prod-acciones">
+                <button class="btn-editar" (click)="editarProducto(p)">Editar</button>
+                <button class="btn-eliminar" (click)="eliminarProducto(p.id)">Eliminar</button>
+            </div>
+        </div>
+    </div>
+
+    <div *ngIf="productosCargados().length === 0" class="mensaje-vacio">
+        No hay productos cargados en el Candy Bar.
+    </div>
+</div>

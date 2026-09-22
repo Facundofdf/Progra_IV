@@ -1,0 +1,78 @@
+<div class="admin-section">
+    <!-- Mensaje flotante -->
+    <div *ngIf="mensaje().texto" class="alerta" [ngClass]="mensaje().tipo">
+        {{ mensaje().texto }}
+    </div>
+
+    <h2>🕒 Cartelera y Horarios (Funciones)</h2>
+    <p class="subtitulo">Programación de películas. La asignación de sala es 100% automática según disponibilidad.</p>
+
+    <!-- FORMULARIO DE PROGRAMACIÓN -->
+    <form [formGroup]="funcionForm" (ngSubmit)="guardarFuncion()" class="panel-form">
+
+        <div class="form-row">
+            <div class="input-group" style="flex: 2;">
+                <label>Película</label>
+                <select formControlName="pelicula_id">
+                    <option value="">-- Seleccionar Película --</option>
+                    <option *ngFor="let p of peliculas()" [value]="p.id">
+                        {{ p.titulo }} ({{ p.estado }})
+                    </option>
+                </select>
+            </div>
+
+            <div class="input-group">
+                <label>Fecha y Hora (Sin calendarios raros)</label>
+                <!-- REQUISITO DEL TP CUMPLIDO: Forma limpia de ingresar la fecha -->
+                <input type="datetime-local" formControlName="fecha_hora">
+            </div>
+        </div>
+
+        <div class="form-row mt-1">
+            <div class="input-group">
+                <label>Formato de Sala</label>
+                <select formControlName="formato">
+                    <option value="2D">2D Clásico</option>
+                    <option value="3D">3D Lentes</option>
+                    <option value="4D">4D Movimiento</option>
+                    <option value="5D">5D Experiencia Total</option>
+                </select>
+            </div>
+
+            <div class="input-group">
+                <label>Idioma</label>
+                <select formControlName="idioma">
+                    <option value="Castellano">Doblada al Castellano</option>
+                    <option value="Subtitulada">Idioma Original (Subtitulada)</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-actions mt-2">
+            <button type="submit" class="btn-guardar" [disabled]="funcionForm.invalid">
+                Asignar Sala Automáticamente y Guardar
+            </button>
+        </div>
+    </form>
+
+    <hr class="divisor">
+
+    <!-- LISTADO DE FUNCIONES PROGRAMADAS -->
+    <h3>Agenda Programada</h3>
+    <div class="grid-funciones">
+        <div class="card-funcion" *ngFor="let f of funciones()">
+            <div class="funcion-header">
+                <span class="sala-badge">{{ f.salas?.nombre || 'Sala ?' }}</span>
+                <h4>{{ f.peliculas?.titulo }}</h4>
+            </div>
+            <div class="funcion-body">
+                <p class="fecha-hora">📅 {{ f.fecha_hora | date:'dd/MM/yyyy - HH:mm' }} hs</p>
+                <div class="tags">
+                    <span class="tag-formato">{{ f.formato }}</span>
+                    <span class="tag-idioma">{{ f.idioma }}</span>
+                </div>
+            </div>
+            <button class="btn-eliminar mt-1" (click)="eliminarFuncion(f.id)">Cancelar Función</button>
+        </div>
+    </div>
+</div>

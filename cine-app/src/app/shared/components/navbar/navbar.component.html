@@ -1,0 +1,24 @@
+<nav class="navbar">
+    <div class="logo" routerLink="/">🎬 CineApp</div>
+
+    <!-- BUSCADOR GLOBAL -->
+    <div class="nav-search">
+        <!-- El evento (keyup.enter) permite buscar apretando la tecla Enter -->
+        <input type="text" placeholder="Buscar películas..." #searchInput (keyup.enter)="buscarPelicula(searchInput.value)">
+        <button (click)="buscarPelicula(searchInput.value)">🔍</button>
+    </div>
+
+    <ul class="nav-links">
+        <li><a routerLink="/">Cartelera</a></li>
+
+        <ng-container *ngIf="!usuario()">
+            <li><a routerLink="/login" class="btn-login">Ingresar</a></li>
+        </ng-container>
+
+        <ng-container *ngIf="usuario()">
+            <li><a routerLink="/perfil" class="btn-perfil">👤 Mi Perfil</a></li>
+            <li *ngIf="rolUsuario() === 'admin'"><a routerLink="/admin">Panel Admin</a></li>
+            <li><button (click)="logout()" class="btn-logout">Salir</button></li>
+        </ng-container>
+    </ul>
+</nav>

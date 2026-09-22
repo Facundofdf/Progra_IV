@@ -1,0 +1,118 @@
+<div class="cargando" *ngIf="cargando()">Cargando disponibilidad de la sala...</div>
+
+<div class="compra-layout" *ngIf="!cargando() && funcionInfo()">
+
+    <!-- PANEL PRINCIPAL: EL MAPA -->
+    <main class="sala-container">
+        <h2>Elegí tus butacas</h2>
+        <p class="info-funcion">{{ funcionInfo().peliculas.titulo }} - {{ funcionInfo().salas.nombre }} - {{
+            funcionInfo().fecha_hora | date:'dd/MM/yyyy HH:mm' }} hs</p>
+
+        <div class="pantalla-cine">PANTALLA</div>
+
+        <div class="mapa-grilla">
+            <div class="fila" *ngFor="let fila of filasMapa()">
+
+                <div class="letra-fila">{{ fila.letra }}</div>
+
+                <!-- Bloque Izquierdo -->
+                <div class="bloque">
+                    <button *ngFor="let b of fila.bloques.izq" class="butaca" [ngClass]="{ 
+                    'ocupada': b.ocupada, 
+                    'seleccionada': estaSeleccionada(b.codigo),
+                    'vip': b.tipo === 'vip',
+                    'accesible': b.tipo === 'accesible'
+                  }" [disabled]="b.ocupada" (click)="toggleSeleccion(b)">
+                        {{ b.codigo }}
+                    </button>
+                </div>
+
+                <!-- Bloque Central -->
+                <div class="bloque centro">
+                    <button *ngFor="let b of fila.bloques.centro" class="butaca" [ngClass]="{ 
+                    'ocupada': b.ocupada, 
+                    'seleccionada': estaSeleccionada(b.codigo),
+                    'vip': b.tipo === 'vip',
+                    'accesible': b.tipo === 'accesible'
+                  }" [disabled]="b.ocupada" (click)="toggleSeleccion(b)">
+                        {{ b.codigo }}
+                    </button>
+                </div>
+
+                <!-- Bloque Derecho -->
+                <div class="bloque">
+                    <button *ngFor="let b of fila.bloques.der" class="butaca" [ngClass]="{ 
+                    'ocupada': b.ocupada, 
+                    'seleccionada': estaSeleccionada(b.codigo),
+                    'vip': b.tipo === 'vip',
+                    'accesible': b.tipo === 'accesible'
+                  }" [disabled]="b.ocupada" (click)="toggleSeleccion(b)">
+                        {{ b.codigo }}
+                    </button>
+                </div>
+
+                <div class="letra-fila">{{ fila.letra }}</div>
+            </div>
+        </div>
+
+        <!-- REFERENCIAS VISUALES -->
+        <div class="leyenda">
+            <div class="item-leyenda">
+                <div class="butaca libre"></div> Libre
+            </div>
+            <div class="item-leyenda">
+                <div class="butaca seleccionada"></div> Seleccionada
+            </div>
+            <div class="item-leyenda">
+                <div class="butaca ocupada"></div> Ocupada
+            </div>
+            <div class="item-leyenda">
+                <div class="butaca vip"></div> VIP (+30%)
+            </div>
+            <div class="item-leyenda">
+                <div class="butaca accesible"></div> ♿ Movilidad
+            </div>
+        </div>
+    </main>
+
+    <!-- PANEL LATERAL: RESUMEN DE COMPRA -->
+    <aside class="resumen-container">
+        <div class="ticket-resumen">
+            <h3>Tu Selección</h3>
+
+            <div *ngIf="asientosSeleccionados().length === 0" class="vacio">
+                No elegiste ninguna butaca todavía.
+            </div>
+
+            <ul class="lista-entradas" *ngIf="asientosSeleccionados().length > 0">
+                <li *ngFor="let butaca of asientosSeleccionados()">
+                    <span>Entrada {{ butaca.codigo }} <small *ngIf="butaca.tipo==='vip'">(VIP)</small></span>
+                    <span>${{ precioBase + butaca.precioAdicional }}</span>
+                </li>
+            </ul>
+
+            <hr>
+            <div class="total-compra">
+                <span>Total:</span>
+                <span class="monto-total">${{ calcularTotal() }}</span>
+            </div>
+
+            <button class="btn-continuar" [disabled]="asientosSeleccionados().length === 0" (click)="continuarCompra()">
+                Confirmar compra
+            </button>
+        </div>
+    </aside>
+    <!-- MODAL DE DECISIÓN DEL TP -->
+    <div class="modal-overlay" *ngIf="mostrarModalDecision()">
+        <div class="modal-decision">
+            <h3>🍿 ¿Querés sumar algo del Candy Bar?</h3>
+            <p>Ahorrá tiempo retirando tus combos directo con el código QR de tu entrada.</p>
+
+            <div class="modal-botones">
+                <button class="btn-candy" (click)="irAlCandyBar()">Sí, ver combos y snacks</button>
+                <button class="btn-pago" (click)="irDirectoAPagar()">No gracias, ir a pagar</button>
+            </div>
+        </div>
+    </div>
+
+</div>

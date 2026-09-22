@@ -1,0 +1,54 @@
+<div class="admin-section">
+    <div *ngIf="mensaje().texto" class="alerta" [ngClass]="mensaje().tipo">
+        {{ mensaje().texto }}
+    </div>
+
+    <h2>🎟️ Gestión de Cupones</h2>
+    <p class="subtitulo">Creá códigos de descuento para fidelizar a los clientes o para fechas especiales.</p>
+
+    <form [formGroup]="cuponForm" (ngSubmit)="guardarCupon()" class="panel-form">
+        <div class="form-row">
+            <div class="input-group">
+                <label>Código del Cupón</label>
+                <input type="text" formControlName="codigo" placeholder="Ej: VERANO20, JUBILADOS50"
+                    style="text-transform: uppercase;">
+            </div>
+
+            <div class="input-group">
+                <label>Descuento (%)</label>
+                <input type="number" formControlName="porcentaje_descuento" placeholder="Ej: 20">
+            </div>
+
+            <div class="input-group">
+                <label>Edad Mínima (Opcional)</label>
+                <input type="number" formControlName="edad_minima" placeholder="Ej: 60 (Vacío = Sin restricción)">
+            </div>
+        </div>
+
+        <div class="form-actions mt-2">
+            <button type="submit" class="btn-guardar" [disabled]="cuponForm.invalid">
+                Crear Cupón
+            </button>
+        </div>
+    </form>
+
+    <hr class="divisor">
+
+    <h3>Cupones Activos</h3>
+
+    <div class="grid-cupones">
+        <div class="card-cupon" *ngFor="let c of cupones()">
+            <div class="cupon-header">
+                <h4>{{ c.codigo }}</h4>
+                <span class="badge-porcentaje">-{{ c.porcentaje_descuento }}%</span>
+            </div>
+
+            <div class="cupon-body">
+                <p *ngIf="c.edad_minima">⚠️ Solo para mayores de <b>{{ c.edad_minima }} años</b></p>
+                <p *ngIf="!c.edad_minima">✅ Sin restricción de edad</p>
+            </div>
+
+            <button class="btn-eliminar mt-1" (click)="eliminarCupon(c.id)">Eliminar Cupón</button>
+        </div>
+    </div>
+</div>

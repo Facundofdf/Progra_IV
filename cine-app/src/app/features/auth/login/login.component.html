@@ -1,0 +1,66 @@
+<div class="login-container">
+    <div class="login-card">
+        <h2>{{ esRegistro() ? 'Crear Cuenta' : 'Iniciar Sesión' }}</h2>
+
+        <form [formGroup]="authForm" (ngSubmit)="procesarFormulario()">
+            <div class="input-group">
+                <label>Email</label>
+                <input type="email" formControlName="email" placeholder="tu@email.com">
+            </div>
+
+            <div class="input-group mt-1">
+                <label>Contraseña</label>
+                <input type="password" formControlName="password" placeholder="Mínimo 6 caracteres">
+            </div>
+
+            <!-- CAMPOS DEL TP (Solo visibles en registro) -->
+            <ng-container *ngIf="esRegistro()">
+                <div class="form-row mt-1">
+                    <div class="input-group">
+                        <label>Nombre</label>
+                        <input type="text" formControlName="nombre">
+                    </div>
+                    <div class="input-group">
+                        <label>Apellido</label>
+                        <input type="text" formControlName="apellido">
+                    </div>
+                </div>
+
+                <div class="input-group mt-1">
+                    <label>Fecha de Nacimiento</label>
+                    <input type="date" formControlName="fecha_nacimiento">
+                </div>
+
+                <div class="form-row mt-1">
+                    <div class="input-group">
+                        <label>Tipo de Sangre</label>
+                        <input type="text" formControlName="tipo_sangre" placeholder="Ej: O+">
+                    </div>
+                    <div class="input-group">
+                        <label>Color de Ojos</label>
+                        <input type="text" formControlName="color_ojos">
+                    </div>
+                </div>
+
+                <div class="input-group mt-1">
+                    <label>Días de Vacaciones / Año</label>
+                    <input type="number" formControlName="dias_vacaciones">
+                </div>
+            </ng-container>
+
+            <div class="error-box" *ngIf="mensajeError()">
+                {{ mensajeError() }}
+            </div>
+
+            <button type="submit" [disabled]="cargando()" class="btn-submit">
+                {{ cargando() ? 'Procesando...' : (esRegistro() ? 'Registrarme' : 'Ingresar') }}
+            </button>
+        </form>
+
+        <div class="toggle-mode">
+            <a href="javascript:void(0)" (click)="toggleModo()">
+                {{ esRegistro() ? '¿Ya tenés cuenta? Iniciá sesión' : '¿No tenés cuenta? Registrate' }}
+            </a>
+        </div>
+    </div>
+</div>

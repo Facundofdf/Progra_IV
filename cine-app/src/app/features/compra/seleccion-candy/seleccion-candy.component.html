@@ -1,0 +1,91 @@
+<div class="cargando" *ngIf="cargando()">Preparando el Candy Bar...</div>
+
+<div class="compra-layout" *ngIf="!cargando()">
+
+    <main class="candy-container">
+        <button class="btn-volver" (click)="volverButacas()">← Volver a Butacas</button>
+        <h2>🍿 Agregá Snacks a tu Compra</h2>
+        <p class="subtitulo">Ahorrá tiempo retirando directamente por la caja rápida con tu código QR.</p>
+
+        <!-- COMBOS DESTACADOS (Requisito del TP) -->
+        <div class="seccion-destacada" *ngIf="combos().length > 0">
+            <h3>⭐ Combos Destacados</h3>
+            <div class="grid-candy">
+                <div class="card-candy combo" *ngFor="let c of combos()">
+                    <div class="candy-info">
+                        <h4>{{ c.nombre }}</h4>
+                        <span class="precio">${{ c.precio_pesos }}</span>
+                    </div>
+                    <div class="controles">
+                        <button (click)="modificarCantidad(c, -1)" [disabled]="obtenerCantidad(c.id) === 0">-</button>
+                        <span>{{ obtenerCantidad(c.id) }}</span>
+                        <button (click)="modificarCantidad(c, 1)">+</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- RESTO DE PRODUCTOS -->
+        <div class="seccion-normal" *ngIf="productos().length > 0">
+            <h3>Snacks y Bebidas</h3>
+            <div class="grid-candy">
+                <div class="card-candy" *ngFor="let p of productos()">
+                    <div class="candy-info">
+                        <span class="badge" [ngClass]="p.categoria">{{ p.categoria }}</span>
+                        <h4>{{ p.nombre }}</h4>
+                        <span class="precio">${{ p.precio_pesos }}</span>
+                    </div>
+                    <div class="controles">
+                        <button (click)="modificarCantidad(p, -1)" [disabled]="obtenerCantidad(p.id) === 0">-</button>
+                        <span>{{ obtenerCantidad(p.id) }}</span>
+                        <button (click)="modificarCantidad(p, 1)">+</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- RESUMEN LATERAL COMPLETO -->
+    <aside class="resumen-container">
+        <div class="ticket-resumen">
+            <h3>Tu Pedido</h3>
+
+            <!-- Detalle Entradas -->
+            <div class="bloque-resumen">
+                <h4>🎟️ Entradas ({{ compraService.reserva().butacas.length }})</h4>
+                <div class="item-resumen" *ngFor="let b of compraService.reserva().butacas">
+                    <span>Butaca {{ b.codigo }}</span>
+                </div>
+                <div class="subtotal">Subtotal: ${{ compraService.reserva().totalButacas }}</div>
+            </div>
+
+            <hr>
+
+            <!-- Detalle Candy -->
+            <div class="bloque-resumen">
+                <h4>🍿 Candy Bar</h4>
+                <div *ngIf="carritoCandy().length === 0" class="vacio-candy">Sin productos adicionales.</div>
+                <div class="item-resumen" *ngFor="let item of carritoCandy()">
+                    <span>{{ item.cantidad }}x {{ item.producto.nombre }}</span>
+                    <span>${{ item.producto.precio_pesos * item.cantidad }}</span>
+                </div>
+                <div class="subtotal">Subtotal: ${{ calcularTotalCandy() }}</div>
+            </div>
+
+            <hr>
+
+            <div class="total-compra">
+                <span>Total Final:</span>
+                <span class="monto-total">${{ compraService.reserva().totalButacas + calcularTotalCandy() }}</span>
+            </div>
+
+            <button class="btn-continuar" (click)="continuarAlPago()">
+                Ir a Pagar 💳
+            </button>
+            <small style="display: block; text-align: center; margin-top: 1rem; color: #888;">
+                (Podés saltear el Candy Bar y pagar directamente)
+            </small>
+        </div>
+    </aside>
+
+</div>

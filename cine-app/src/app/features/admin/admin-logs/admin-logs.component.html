@@ -1,0 +1,50 @@
+<div class="admin-section">
+    <h2>📝 Log de Actividad</h2>
+    <p class="subtitulo">Registro de auditoría de los últimos 100 movimientos en el sistema.</p>
+
+    <div class="tabla-container" *ngIf="!cargando()">
+        <table class="tabla-logs" *ngIf="logsCargados().length > 0; else sinLogs">
+            <thead>
+                <tr>
+                    <th>Fecha y Hora</th>
+                    <th>Usuario</th>
+                    <th>Módulo</th>
+                    <th>Acción</th>
+                    <th>Detalles (JSON)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let log of logsCargados()">
+                    <td class="fecha">{{ log.created_at | date:'dd/MM/yyyy HH:mm:ss' }}</td>
+
+                    <td>
+                        <b>{{ log.perfiles?.nombre ? (log.perfiles?.nombre + ' ' + log.perfiles?.apellido) : 'Sistema'
+                            }}</b>
+                        <br>
+                        <small class="email-texto">{{ log.perfiles?.email || 'N/A' }}</small>
+                    </td>
+
+                    <td><span class="badge-modulo">{{ log.entidad }}</span></td>
+
+                    <td>
+                        <span class="badge-accion" [ngClass]="log.accion">{{ log.accion }}</span>
+                    </td>
+
+                    <td class="detalles-json">
+                        <pre>{{ log.detalles | json }}</pre>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <ng-template #sinLogs>
+            <div class="mensaje-vacio">
+                <p>No hay registros de actividad recientes.</p>
+            </div>
+        </ng-template>
+    </div>
+
+    <div *ngIf="cargando()" class="mensaje-vacio">
+        Cargando registros de auditoría...
+    </div>
+</div>

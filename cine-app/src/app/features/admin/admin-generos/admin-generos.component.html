@@ -1,0 +1,22 @@
+<div class="admin-section">
+    <h2>Gestión de Géneros</h2>
+
+    <form [formGroup]="generoForm" (ngSubmit)="guardarGenero()" class="panel-form">
+        <div class="input-group">
+            <label>Nombre del Nuevo Género</label>
+            <div style="display: flex; gap: 1rem;">
+                <input type="text" formControlName="nombre" placeholder="Ej: Ciencia Ficción" style="flex: 1;">
+                <button type="submit" [disabled]="generoForm.invalid" class="btn-guardar">Agregar</button>
+            </div>
+        </div>
+    </form>
+
+    <hr class="divisor">
+
+    <div class="grid-generos">
+        <div class="card-genero" *ngFor="let g of generosCargados()">
+            <span>{{ g.nombre }}</span>
+            <button class="btn-eliminar" (click)="eliminarGenero(g.id)">Eliminar</button>
+        </div>
+    </div>
+</div>

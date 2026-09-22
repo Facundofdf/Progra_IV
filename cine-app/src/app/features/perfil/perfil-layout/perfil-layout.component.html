@@ -1,0 +1,15 @@
+<div class="perfil-layout">
+    <!-- Menú Lateral -->
+    <aside class="sidebar">
+        <h2>Mi Cuenta</h2>
+        <nav class="menu-lateral">
+            <a routerLink="peliculas" routerLinkActive="activo">🎬 Mis Películas</a>
+            <a routerLink="cosas" routerLinkActive="activo">🎁 Mis Cosas</a>
+        </nav>
+    </aside>
+
+    <!-- Acá adentro se cargarán las dos pantallas hijas -->
+    <main class="contenido-perfil">
+        <router-outlet></router-outlet>
+    </main>
+</div>

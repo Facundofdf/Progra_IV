@@ -1,0 +1,32 @@
+<!-- CONTENEDOR DE GRÁFICOS -->
+<div class="graficos-grid">
+
+    <!-- Gráfico de Películas -->
+    <div class="tarjeta-grafico grafico-pelis">
+        <div class="grafico-header">
+            <h3>Ranking de Películas</h3>
+            <select [(ngModel)]="rangoPeliculas" (ngModelChange)="onRangoChange()" class="filtro-rango">
+                <option value="semana">Últimos 7 días</option>
+                <option value="mes">Últimos 30 días</option>
+            </select>
+        </div>
+
+        <div class="canvas-container">
+            <!-- Canvas nativo al que apuntamos desde TypeScript -->
+            <canvas id="canvasPelis"></canvas>
+        </div>
+    </div>
+
+    <!-- Gráfico del Candy Bar -->
+    <div class="tarjeta-grafico grafico-candy">
+        <div class="grafico-header">
+            <h3>Productos Estrella</h3>
+        </div>
+
+        <div class="canvas-container pie-container">
+            <!-- Canvas nativo al que apuntamos desde TypeScript -->
+            <canvas id="canvasCandy"></canvas>
+        </div>
+    </div>
+
+</div>

@@ -1,0 +1,67 @@
+<div class="historial-container">
+
+    <!-- SECCIÓN FUTURAS (Próximas salidas al cine) -->
+    <section class="seccion-bloque">
+        <h2>🍿 Mis Próximas Funciones</h2>
+        <p class="subtitulo" *ngIf="comprasFuturas().length > 0">Podés cancelar tus entradas hasta 2 horas antes y te
+            devolvemos el dinero en crédito.</p>
+
+        <div class="mensaje-vacio" *ngIf="comprasFuturas().length === 0">No tenés funciones programadas.</div>
+
+        <div class="grid-historial">
+            <div class="card-peli futura" *ngFor="let c of comprasFuturas()">
+                <img [src]="c.poster || 'https://via.placeholder.com/200x300/111/fff?text=Sin+Poster'" alt="Poster">
+                <div class="info">
+                    <h3>{{ c.titulo }}</h3>
+                    <p class="fecha-funcion">{{ c.fechaFuncion | date:'dd/MM/yyyy HH:mm' }} hs</p>
+                    <span class="badge">{{ c.entradasCant }} Entrada(s)</span>
+                    <button class="btn-cancelar" (click)="cancelarCompra(c)">Cancelar Compra</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <hr class="divisor">
+
+    <!-- SECCIÓN PASADAS (Para reseñar) -->
+    <section class="seccion-bloque">
+        <h2>🎬 Historial (Películas Vistas)</h2>
+
+        <div class="mensaje-vacio" *ngIf="comprasPasadas().length === 0">Todavía no fuiste a ver ninguna película.</div>
+
+        <div class="grid-historial">
+            <div class="card-peli" *ngFor="let c of comprasPasadas()">
+                <img [src]="c.poster || 'https://via.placeholder.com/200x300/111/fff?text=Sin+Poster'" alt="Poster">
+                <div class="info">
+                    <h3>{{ c.titulo }}</h3>
+                    <p class="fecha-pasada">Vista el {{ c.fechaFuncion | date:'dd/MM/yyyy' }}</p>
+                    <button class="btn-resenar" (click)="abrirResena(c)">⭐ Dejar Reseña</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</div>
+
+<!-- MODAL FALSO DE RESEÑAS -->
+<div class="modal-overlay" *ngIf="peliculaAResenar()">
+    <div class="modal-content">
+        <h3>Reseña: {{ peliculaAResenar().titulo }}</h3>
+
+        <div class="form-group">
+            <label>Puntuación (1 a 5)</label>
+            <input type="number" min="1" max="5" [(ngModel)]="resenaPuntuacion">
+        </div>
+
+        <div class="form-group">
+            <label>Tu Comentario</label>
+            <textarea rows="3" [(ngModel)]="resenaComentario" placeholder="¿Qué te pareció la peli?"></textarea>
+        </div>
+
+        <div class="modal-acciones">
+            <button class="btn-guardar" (click)="guardarResena()" [disabled]="!resenaComentario().trim()">Guardar
+                Reseña</button>
+            <button class="btn-cerrar" (click)="peliculaAResenar.set(null)">Cancelar</button>
+        </div>
+    </div>
+</div>

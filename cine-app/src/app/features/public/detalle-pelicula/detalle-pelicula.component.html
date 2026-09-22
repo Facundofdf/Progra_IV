@@ -1,0 +1,105 @@
+<div class="cargando" *ngIf="cargando()">Cargando película...</div>
+
+<div class="detalle-container" *ngIf="!cargando() && pelicula()">
+
+    <!-- CABECERA: Info de la película -->
+    <div class="hero-pelicula">
+        <img [src]="pelicula().imagen_poster || 'https://via.placeholder.com/300x450/111/fff?text=Sin+Poster'"
+            alt="Poster" class="poster">
+
+        <div class="info-principal">
+            <h1>{{ pelicula().titulo }}</h1>
+
+            <div class="meta-tags">
+                <span class="tag-restriccion">{{ pelicula().restriccion_edad }}</span>
+                <span class="tag-duracion">⏱️ {{ pelicula().duracion_minutos }} min</span>
+                <span class="tag-genero" *ngFor="let pg of pelicula().peliculas_generos">{{ pg.generos.nombre }}</span>
+            </div>
+
+            <p class="sinopsis">{{ pelicula().sinopsis || 'Sinopsis no disponible.' }}</p>
+
+            <!-- Sistema de Reseñas -->
+            <div class="resenas-resumen">
+                <h3>⭐ Calificación Promedio: <span class="puntaje">{{ calcularPromedio() }}</span> / 5</h3>
+                <small>Basado en {{ resenas().length }} reseñas de espectadores.</small>
+            </div>
+        </div>
+    </div>
+
+    <hr class="divisor">
+
+    <!-- SECCIÓN DE FUNCIONES -->
+    <!-- SECCIÓN DE FUNCIONES -->
+    <div class="funciones-section">
+        <h2>🎟️ Funciones Disponibles</h2>
+
+        <!-- BARRA DE FILTROS -->
+        <div class="barra-filtros">
+            <div class="filtro-grupo">
+                <label>Fecha</label>
+                <input type="date" [(ngModel)]="filtroFecha" class="input-filtro">
+            </div>
+
+            <div class="filtro-grupo">
+                <label>Formato</label>
+                <select [(ngModel)]="filtroFormato" class="input-filtro">
+                    <option value="">Todos</option>
+                    <option *ngFor="let f of formatosDisponibles()" [value]="f">{{ f }}</option>
+                </select>
+            </div>
+
+            <div class="filtro-grupo">
+                <label>Idioma</label>
+                <select [(ngModel)]="filtroIdioma" class="input-filtro">
+                    <option value="">Todos</option>
+                    <option *ngFor="let i of idiomasDisponibles()" [value]="i">{{ i }}</option>
+                </select>
+            </div>
+
+            <!-- Botón para limpiar filtros si se arrepiente -->
+            <button class="btn-limpiar" (click)="filtroFecha.set(''); filtroFormato.set(''); filtroIdioma.set('')">
+                Limpiar Filtros
+            </button>
+        </div>
+
+        <!-- CAMBIAMOS funciones() POR funcionesFiltradas() -->
+        <div class="grid-funciones" *ngIf="funcionesFiltradas().length > 0; else sinFunciones">
+            <div class="card-funcion" *ngFor="let f of funcionesFiltradas()">
+                <!-- ... (todo el contenido de tu card-funcion queda idéntico) ... -->
+                <div class="horario">
+                    <span class="fecha">{{ f.fecha_hora | date:'dd/MM/yyyy' }}</span>
+                    <span class="hora">{{ f.fecha_hora | date:'HH:mm' }} hs</span>
+                </div>
+                <div class="detalles-sala">
+                    <span class="sala">{{ f.salas.nombre }}</span>
+                    <span class="formato">{{ f.formato }}</span>
+                    <span class="idioma">{{ f.idioma }}</span>
+                </div>
+                <button class="btn-comprar" [routerLink]="['/comprar']" [queryParams]="{ funcion: f.id }">
+                    Elegir Butacas
+                </button>
+            </div>
+        </div>
+
+        <ng-template #sinFunciones>
+            <div class="mensaje-vacio">
+                ⚠️ No hay funciones disponibles para los filtros seleccionados.
+            </div>
+        </ng-template>
+    </div>
+
+    <hr class="divisor">
+
+    <!-- COMENTARIOS DE LA GENTE -->
+    <div class="comentarios-section" *ngIf="resenas().length > 0">
+        <h2>💬 Comentarios</h2>
+        <div class="card-comentario" *ngFor="let r of resenas()">
+            <div class="comentario-header">
+                <b>{{ r.perfiles.nombre || 'Anónimo' }}</b>
+                <span class="estrellas">⭐ {{ r.puntuacion }}/5</span>
+            </div>
+            <p>{{ r.comentario }}</p>
+        </div>
+    </div>
+
+</div>

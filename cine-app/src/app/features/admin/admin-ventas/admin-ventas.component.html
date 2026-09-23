@@ -16,7 +16,7 @@
             <tbody>
                 <tr *ngFor="let venta of ventasCargadas()">
                     <!-- Formateamos la fecha directamente con Angular -->
-                    <td>{{ venta.created_at | date:'dd/MM/yyyy HH:mm' }}</td>
+                    <td>{{ venta.fecha_compra | date:'dd/MM/yyyy HH:mm' }}</td>
 
                     <!-- Si el usuario completó su nombre, lo mostramos. Sino, mostramos "Cliente Anónimo" -->
                     <td>{{ venta.perfiles?.nombre ? (venta.perfiles?.nombre + ' ' + venta.perfiles?.apellido) :
@@ -24,9 +24,9 @@
 
                     <td>{{ venta.perfiles?.email || 'N/A' }}</td>
 
-                    <td><span class="badge-pago">{{ venta.metodo_pago || 'MercadoPago' }}</span></td>
+                    <td><span class="badge-pago">{{ venta.metodo_pago || 'Sin especificar' }}</span></td>
 
-                    <td class="monto-total"><b>${{ venta.total }}</b></td>
+                    <td class="monto-total"><b>${{ venta.total_pagado }}</b></td>
                 </tr>
             </tbody>
         </table>

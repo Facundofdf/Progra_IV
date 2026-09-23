@@ -8,6 +8,18 @@
         <p class="info-funcion">{{ funcionInfo().peliculas.titulo }} - {{ funcionInfo().salas.nombre }} - {{
             funcionInfo().fecha_hora | date:'dd/MM/yyyy HH:mm' }} hs</p>
 
+        <!-- AVISO DE RESTRICCIÓN DE EDAD (requisito puntual del TP) -->
+        <div class="aviso-restriccion" *ngIf="restriccionActiva()">
+            ⚠️ Esta función es <b>+{{ edadRequerida() }} años</b>. Toda entrada comprada para esta función debe
+            ir acompañada por un adulto responsable.
+        </div>
+
+        <div class="aviso-bloqueo" *ngIf="restriccionActiva() && !puedeComprar()">
+            🔒 No podés comprar entradas para esta función: o no cumplís la edad mínima (+{{ edadRequerida() }}),
+            o necesitamos que inicies sesión para poder verificarla.
+            <button class="btn-login-inline" (click)="irALogin()">Iniciar sesión</button>
+        </div>
+
         <div class="pantalla-cine">PANTALLA</div>
 
         <div class="mapa-grilla">
@@ -15,40 +27,22 @@
 
                 <div class="letra-fila">{{ fila.letra }}</div>
 
-                <!-- Bloque Izquierdo -->
+                <!-- Bloque Izquierdo: ahora cada butaca es el componente hijo <app-butaca> -->
                 <div class="bloque">
-                    <button *ngFor="let b of fila.bloques.izq" class="butaca" [ngClass]="{ 
-                    'ocupada': b.ocupada, 
-                    'seleccionada': estaSeleccionada(b.codigo),
-                    'vip': b.tipo === 'vip',
-                    'accesible': b.tipo === 'accesible'
-                  }" [disabled]="b.ocupada" (click)="toggleSeleccion(b)">
-                        {{ b.codigo }}
-                    </button>
+                    <app-butaca *ngFor="let b of fila.bloques.izq" [butaca]="b" [seleccionada]="estaSeleccionada(b.codigo)"
+                        (click)="toggleSeleccion($event)"></app-butaca>
                 </div>
 
                 <!-- Bloque Central -->
                 <div class="bloque centro">
-                    <button *ngFor="let b of fila.bloques.centro" class="butaca" [ngClass]="{ 
-                    'ocupada': b.ocupada, 
-                    'seleccionada': estaSeleccionada(b.codigo),
-                    'vip': b.tipo === 'vip',
-                    'accesible': b.tipo === 'accesible'
-                  }" [disabled]="b.ocupada" (click)="toggleSeleccion(b)">
-                        {{ b.codigo }}
-                    </button>
+                    <app-butaca *ngFor="let b of fila.bloques.centro" [butaca]="b" [seleccionada]="estaSeleccionada(b.codigo)"
+                        (click)="toggleSeleccion($event)"></app-butaca>
                 </div>
 
                 <!-- Bloque Derecho -->
                 <div class="bloque">
-                    <button *ngFor="let b of fila.bloques.der" class="butaca" [ngClass]="{ 
-                    'ocupada': b.ocupada, 
-                    'seleccionada': estaSeleccionada(b.codigo),
-                    'vip': b.tipo === 'vip',
-                    'accesible': b.tipo === 'accesible'
-                  }" [disabled]="b.ocupada" (click)="toggleSeleccion(b)">
-                        {{ b.codigo }}
-                    </button>
+                    <app-butaca *ngFor="let b of fila.bloques.der" [butaca]="b" [seleccionada]="estaSeleccionada(b.codigo)"
+                        (click)="toggleSeleccion($event)"></app-butaca>
                 </div>
 
                 <div class="letra-fila">{{ fila.letra }}</div>
@@ -97,7 +91,7 @@
                 <span class="monto-total">${{ calcularTotal() }}</span>
             </div>
 
-            <button class="btn-continuar" [disabled]="asientosSeleccionados().length === 0" (click)="continuarCompra()">
+            <button class="btn-continuar" [disabled]="asientosSeleccionados().length === 0 || !puedeComprar()" (click)="continuarCompra()">
                 Confirmar compra
             </button>
         </div>

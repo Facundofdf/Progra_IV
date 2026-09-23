@@ -3,10 +3,26 @@
 
     <main class="panel-pago">
         <h2>💳 Finalizar Compra</h2>
-        <p style="color:#aaa">Ingresá tus datos de pago para confirmar las entradas.</p>
+        <p style="color:#aaa">Elegí cómo querés pagar para confirmar las entradas.</p>
 
-        <!-- FORMULARIO DE PAGO FALSO (Visual) -->
-        <div class="tarjeta-form">
+        <!-- SELECTOR DE MÉTODO DE PAGO (requisito puntual del TP) -->
+        <div class="metodo-pago-selector">
+            <label class="opcion-metodo" [class.activa]="metodoPago() === 'tarjeta'">
+                <input type="radio" name="metodoPago" value="tarjeta" [ngModel]="metodoPago()" (ngModelChange)="metodoPago.set($event)">
+                💳 Tarjeta
+            </label>
+            <label class="opcion-metodo" [class.activa]="metodoPago() === 'mercadopago'">
+                <input type="radio" name="metodoPago" value="mercadopago" [ngModel]="metodoPago()" (ngModelChange)="metodoPago.set($event)">
+                🅿️ MercadoPago
+            </label>
+            <label class="opcion-metodo" [class.activa]="metodoPago() === 'efectivo'">
+                <input type="radio" name="metodoPago" value="efectivo" [ngModel]="metodoPago()" (ngModelChange)="metodoPago.set($event)">
+                💵 Efectivo en boletería
+            </label>
+        </div>
+
+        <!-- FORMULARIO DE PAGO FALSO (Visual, solo si elige tarjeta) -->
+        <div class="tarjeta-form" *ngIf="metodoPago() === 'tarjeta'">
             <div class="input-group">
                 <label>Número de Tarjeta</label>
                 <input type="text" placeholder="XXXX XXXX XXXX XXXX">
@@ -26,6 +42,9 @@
                 <input type="text" placeholder="Como figura en el plástico">
             </div>
         </div>
+
+        <p *ngIf="metodoPago() === 'mercadopago'" class="aviso-metodo">Te vamos a redirigir a MercadoPago para completar el pago (simulado en esta versión).</p>
+        <p *ngIf="metodoPago() === 'efectivo'" class="aviso-metodo">Pagás en efectivo al retirar en boletería. Reservamos tus butacas por 15 minutos.</p>
     </main>
 
     <aside class="resumen-final">

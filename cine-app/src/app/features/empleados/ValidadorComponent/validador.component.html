@@ -1,1 +1,61 @@
-<p>validador works!</p>
+<div class="validador-container">
+    <h2>🎫 Validar Entrada / Candy</h2>
+    <p class="subtitulo">Escaneá el código QR del cliente o ingresalo manualmente si el lector falla.</p>
+
+    <!-- "CÁMARA" SIMULADA -->
+    <div class="camara-box" [class.escaneando]="escaneando()">
+        <div class="camara-placeholder" *ngIf="!escaneando()">
+            📷
+            <button class="btn-escanear" (click)="simularEscaneoCamara()">Escanear con cámara</button>
+        </div>
+        <div class="camara-escaneando" *ngIf="escaneando()">
+            <div class="linea-scan"></div>
+            <p>Escaneando...</p>
+        </div>
+    </div>
+
+    <!-- CÓDIGO MANUAL -->
+    <div class="input-manual">
+        <label>Código (QR o manual)</label>
+        <div class="fila-input">
+            <input type="text" [(ngModel)]="codigoIngresado" placeholder="Ej: CINE-AB12CD" (keyup.enter)="validar()">
+            <button class="btn-validar" [disabled]="validando() || !codigoIngresado().trim()" (click)="validar()">
+                {{ validando() ? 'Validando...' : 'Validar' }}
+            </button>
+        </div>
+    </div>
+
+    <div class="error-box" *ngIf="error()">{{ error() }}</div>
+
+    <!-- RESULTADOS -->
+    <div class="resultado-box exito" *ngIf="resultado()?.tipo === 'ok'">
+        <h3>✅ Entrada válida</h3>
+        <p>Butacas: <b>{{ resultado()!.compra.entradas.length }}</b></p>
+        <ul class="detalle-butacas">
+            <li *ngFor="let e of resultado()!.compra.entradas">
+                {{ e.codigo_butaca }} — {{ e.funciones?.peliculas?.titulo }}
+            </li>
+        </ul>
+        <div *ngIf="resultado()!.compra.compras_candy?.length > 0">
+            <h4>🍿 Candy Bar a entregar:</h4>
+            <ul class="detalle-butacas">
+                <li *ngFor="let c of resultado()!.compra.compras_candy">
+                    {{ c.cantidad }}x {{ c.productos_candy?.nombre }}
+                </li>
+            </ul>
+        </div>
+        <button class="btn-limpiar" (click)="limpiar()">Validar otro código</button>
+    </div>
+
+    <div class="resultado-box error" *ngIf="resultado()?.tipo === 'ya_usado'">
+        <h3>🚫 Este código ya fue utilizado</h3>
+        <p>No se puede volver a usar la misma entrada.</p>
+        <button class="btn-limpiar" (click)="limpiar()">Validar otro código</button>
+    </div>
+
+    <div class="resultado-box error" *ngIf="resultado()?.tipo === 'no_encontrado'">
+        <h3>❌ Código no encontrado</h3>
+        <p>Revisá que esté bien tipeado. No corresponde a ninguna compra.</p>
+        <button class="btn-limpiar" (click)="limpiar()">Reintentar</button>
+    </div>
+</div>

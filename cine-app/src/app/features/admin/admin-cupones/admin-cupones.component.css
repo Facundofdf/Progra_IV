@@ -146,3 +146,13 @@ button:disabled {
     border: 1px solid #F44336;
     color: #F44336;
 }
+.input-error {
+    border-color: #f44336 !important;
+}
+
+.error-text {
+    color: #f44336;
+    font-size: 0.85rem;
+    margin-top: 0.4rem;
+    font-weight: bold;
+}

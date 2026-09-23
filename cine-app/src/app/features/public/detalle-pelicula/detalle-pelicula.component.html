@@ -12,7 +12,7 @@
 
             <div class="meta-tags">
                 <span class="tag-restriccion">{{ pelicula().restriccion_edad }}</span>
-                <span class="tag-duracion">⏱️ {{ pelicula().duracion_minutos }} min</span>
+                <span class="tag-duracion">⏱️ {{ pelicula().duracion_minutos | duracionAmigable }}</span>
                 <span class="tag-genero" *ngFor="let pg of pelicula().peliculas_generos">{{ pg.generos.nombre }}</span>
             </div>
 
@@ -90,12 +90,39 @@
 
     <hr class="divisor">
 
+    <!-- DEJAR UNA RESEÑA (usuarios registrados Y no registrados, requisito del TP) -->
+    <div class="resena-form-container">
+        <button class="btn-abrir-resena" *ngIf="!mostrarFormularioResena()" (click)="mostrarFormularioResena.set(true)">
+            ✍️ Dejar una reseña
+        </button>
+
+        <div class="resena-form" *ngIf="mostrarFormularioResena()">
+            <h3>Tu reseña</h3>
+            <div class="form-group">
+                <label>Puntuación (1 a 5)</label>
+                <input type="number" min="1" max="5" [(ngModel)]="resenaPuntuacion">
+            </div>
+            <div class="form-group">
+                <label>Tu Comentario</label>
+                <textarea rows="3" [(ngModel)]="resenaComentario" placeholder="¿Qué te pareció la peli?"></textarea>
+            </div>
+            <p class="aviso-anonimo">No hace falta tener cuenta para dejar una reseña.</p>
+            <div class="modal-acciones">
+                <button class="btn-guardar" [disabled]="enviandoResena() || !resenaComentario().trim()" (click)="enviarResena()">
+                    {{ enviandoResena() ? 'Enviando...' : 'Publicar Reseña' }}
+                </button>
+                <button class="btn-cerrar" (click)="mostrarFormularioResena.set(false)">Cancelar</button>
+            </div>
+            <p class="mensaje-resena" *ngIf="mensajeResena()">{{ mensajeResena() }}</p>
+        </div>
+    </div>
+
     <!-- COMENTARIOS DE LA GENTE -->
     <div class="comentarios-section" *ngIf="resenas().length > 0">
         <h2>💬 Comentarios</h2>
         <div class="card-comentario" *ngFor="let r of resenas()">
             <div class="comentario-header">
-                <b>{{ r.perfiles.nombre || 'Anónimo' }}</b>
+                <b>{{ r.perfiles?.nombre || 'Anónimo' }}</b>
                 <span class="estrellas">⭐ {{ r.puntuacion }}/5</span>
             </div>
             <p>{{ r.comentario }}</p>

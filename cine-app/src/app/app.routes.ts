@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { adminGuard, empleadoGuard } from './core/guards/roles.guard';
+import { adminGuard, empleadoGuard, authGuard } from './core/guards/roles.guard';
 import { AdminLayoutComponent } from './features/admin/layout/admin-layout.component';
 
 export const routes: Routes = [
@@ -31,6 +31,7 @@ export const routes: Routes = [
   {
     path: 'perfil',
     loadComponent: () => import('./features/perfil/perfil-layout/perfil-layout.component').then(m => m.PerfilLayoutComponent),
+    canActivate: [authGuard], // Antes esta ruta no tenía ningún guard
     children: [
       { path: '', redirectTo: 'peliculas', pathMatch: 'full' },
       { 

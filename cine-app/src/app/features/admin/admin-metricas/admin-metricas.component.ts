@@ -1,4 +1,4 @@
-import { Component, inject, signal, OnInit } from '@angular/core';
+import { Component, inject, signal, OnInit, OnDestroy, Injector, afterNextRender } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import Chart from 'chart.js/auto'; // Magia pura: importa la librería original completa
@@ -11,8 +11,9 @@ import { SupabaseService } from '../../../core/services/supabase.service';
     templateUrl: './admin-metricas.component.html',
     styleUrls: ['./admin-metricas.component.css']
 })
-export class AdminMetricasComponent implements OnInit {
+export class AdminMetricasComponent implements OnInit, OnDestroy {
     private supabase = inject(SupabaseService);
+    private injector = inject(Injector);
 
     cargando = signal(true);
     ingresosHoy = signal(0);
@@ -29,11 +30,25 @@ export class AdminMetricasComponent implements OnInit {
         // Apagamos el "cargando" para que Angular renderice los <canvas> en el HTML
         this.cargando.set(false);
 
-        // Le damos a Angular 100 milisegundos para dibujar el HTML antes de inyectar los gráficos
-        setTimeout(() => {
+        // Antes se usaba un setTimeout(100ms) "a ojo" para esperar que
+        // Angular termine de dibujar el <canvas> antes de instanciar
+        // Chart.js. afterNextRender() es el hook correcto para esto: se
+        // ejecuta justo después de que el próximo ciclo de renderizado
+        // (el que dibuja el canvas, disparado por cargando.set(false))
+        // termine, sin depender de un tiempo arbitrario.
+        afterNextRender(() => {
             this.cargarGraficoPeliculas();
             this.cargarGraficoCandy();
-        }, 100);
+        }, { injector: this.injector });
+    }
+
+    ngOnDestroy(): void {
+        // Antes los gráficos solo se destruían si el propio componente los
+        // volvía a redibujar; si el usuario simplemente navegaba a otra
+        // sección del panel, las instancias de Chart.js quedaban vivas en
+        // memoria (memory leak). Las destruimos acá explícitamente.
+        this.graficoPeliculasInstancia?.destroy();
+        this.graficoCandyInstancia?.destroy();
     }
 
     async cargarTarjetasDiarias() {

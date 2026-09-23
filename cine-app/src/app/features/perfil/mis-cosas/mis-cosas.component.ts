@@ -46,7 +46,7 @@ export class MisCosasComponent implements OnInit {
     async eliminarAlerta(alertaId: string) {
         if (confirm('¿Dejar de seguir esta película?')) {
             try {
-                await this.supabase['supabase'].from('alertas_estrenos').delete().eq('id', alertaId);
+                await this.supabase.eliminarAlerta(alertaId);
                 await this.cargarDatos(); // Recargamos para actualizar la lista
             } catch (error) {
                 console.error('Error al eliminar alerta:', error);

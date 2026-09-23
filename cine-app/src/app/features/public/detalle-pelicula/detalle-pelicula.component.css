@@ -242,3 +242,95 @@
     background: #333;
     color: white;
 }
+.resena-form-container {
+    margin-bottom: 2rem;
+}
+
+.btn-abrir-resena {
+    background: #fbc02d;
+    color: black;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.resena-form {
+    background: #1e1e1e;
+    border: 1px solid #333;
+    border-radius: 12px;
+    padding: 1.5rem;
+    max-width: 500px;
+}
+
+.resena-form h3 {
+    color: #fbc02d;
+    margin-top: 0;
+}
+
+.resena-form .form-group {
+    margin-bottom: 1.2rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.resena-form label {
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+    color: #aaa;
+}
+
+.resena-form input,
+.resena-form textarea {
+    background: #333;
+    color: white;
+    border: 1px solid #555;
+    padding: 0.8rem;
+    border-radius: 6px;
+    font-family: inherit;
+}
+
+.aviso-anonimo {
+    color: #888;
+    font-size: 0.85rem;
+    font-style: italic;
+    margin-top: -0.5rem;
+}
+
+.modal-acciones {
+    display: flex;
+    gap: 1rem;
+}
+
+.resena-form .btn-guardar {
+    flex: 1;
+    background: #4CAF50;
+    color: white;
+    border: none;
+    padding: 0.8rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.resena-form .btn-guardar:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.resena-form .btn-cerrar {
+    flex: 1;
+    background: transparent;
+    color: white;
+    border: 1px solid #555;
+    padding: 0.8rem;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.mensaje-resena {
+    margin-top: 1rem;
+    color: #4CAF50;
+    font-weight: bold;
+}

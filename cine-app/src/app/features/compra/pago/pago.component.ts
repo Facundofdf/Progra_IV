@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { SupabaseService } from '../../../core/services/supabase.service';
 import { CompraService } from '../../../core/services/compra.service';
+import { calcularEdad } from '../../../core/utils/edad.util';
 
 @Component({
     selector: 'app-pago',
@@ -29,6 +30,10 @@ export class PagoComponent implements OnInit {
     codigoCupon = signal('');
     cuponAplicado = signal<any>(null);
     mensajeCupon = signal({ texto: '', error: false });
+
+    // Método de pago elegido por el cliente (requisito puntual del TP:
+    // el resumen debe mostrar "el método de pago que desea utilizar")
+    metodoPago = signal<'tarjeta' | 'efectivo' | 'mercadopago'>('tarjeta');
 
     // Puntos y Crédito
     usarCredito = signal(false);
@@ -89,13 +94,33 @@ export class PagoComponent implements OnInit {
     async aplicarCupon() {
         if (!this.codigoCupon().trim()) return;
         const cuponDB = await this.supabase.validarCupon(this.codigoCupon());
-        if (cuponDB) {
-            this.cuponAplicado.set(cuponDB);
-            this.mensajeCupon.set({ texto: `¡Cupón de ${cuponDB.porcentaje_descuento}% aplicado!`, error: false });
-        } else {
+
+        if (!cuponDB) {
             this.cuponAplicado.set(null);
             this.mensajeCupon.set({ texto: 'Cupón inválido.', error: true });
+            return;
         }
+
+        // Antes NO se comprobaba la edad mínima del cupón (ej: "solo +50")
+        // contra la edad real del comprador: cualquiera podía aplicarlo.
+        if (cuponDB.edad_minima) {
+            const edadUsuario = calcularEdad(this.perfilUsuario()?.fecha_nacimiento);
+
+            if (edadUsuario === null) {
+                this.cuponAplicado.set(null);
+                this.mensajeCupon.set({ texto: `Este cupón es solo para mayores de ${cuponDB.edad_minima} años. Iniciá sesión con tu fecha de nacimiento cargada para poder validarlo.`, error: true });
+                return;
+            }
+
+            if (edadUsuario < cuponDB.edad_minima) {
+                this.cuponAplicado.set(null);
+                this.mensajeCupon.set({ texto: `Este cupón es solo para mayores de ${cuponDB.edad_minima} años.`, error: true });
+                return;
+            }
+        }
+
+        this.cuponAplicado.set(cuponDB);
+        this.mensajeCupon.set({ texto: `¡Cupón de ${cuponDB.porcentaje_descuento}% aplicado!`, error: false });
     }
 
     canjearEntradaConPuntos() {
@@ -139,7 +164,8 @@ export class PagoComponent implements OnInit {
                 idUsuario,
                 this.puntosAGastar(),
                 creditoGastadoExacto,
-                this.recompensaTexto()
+                this.recompensaTexto(),
+                this.metodoPago()
             );
 
             this.codigoTicketFinal.set(codigoGenerado);

@@ -1,13 +1,14 @@
 import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { SupabaseService } from '../../../core/services/supabase.service';
+import { AutoFocusDirective } from '../../../shared/directives/auto-focus.directive';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, AutoFocusDirective],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
@@ -15,6 +16,7 @@ export class LoginComponent {
   private fb = inject(FormBuilder);
   private supabase = inject(SupabaseService);
   private router = inject(Router);
+  private route = inject(ActivatedRoute);
 
   esRegistro = signal(false);
   mensajeError = signal('');
@@ -73,14 +75,23 @@ export class LoginComponent {
       }
       
       await this.supabase.iniciarSesion(email!, password!);
-      
+
+      // Si el authGuard lo mandó acá porque quería entrar a otra ruta
+      // (ej: /perfil), lo devolvemos ahí en vez de mandarlo siempre a
+      // una pantalla fija según el rol.
+      const redirectTo = this.route.snapshot.queryParamMap.get('redirectTo');
+      if (redirectTo) {
+        this.router.navigateByUrl(redirectTo);
+        return;
+      }
+
       const rol = await this.supabase.getRolActual();
       if (rol === 'admin') {
         this.router.navigate(['/admin']);
       } else if (rol === 'empleado') {
         this.router.navigate(['/empleados/validar']);
       } else {
-        this.router.navigate(['/']); 
+        this.router.navigate(['/']);
       }
 
     } catch (error: any) {

@@ -56,7 +56,8 @@ export class AdminFuncionesComponent implements OnInit {
 
         try {
             // Intentamos crear. El servicio decidirá a qué sala va.
-            await this.supabase.crearFuncionAutomaticamente(this.funcionForm.value);
+            const adminActual = await this.supabase.getUsuarioActual();
+            await this.supabase.crearFuncionAutomaticamente(this.funcionForm.value, adminActual?.id ?? null);
             this.mostrarMensaje('Función creada. Sala asignada automáticamente.', 'exito');
             this.funcionForm.reset({ formato: '2D', idioma: 'Castellano' });
             await this.cargarDatos();

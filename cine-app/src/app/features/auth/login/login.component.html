@@ -5,7 +5,7 @@
         <form [formGroup]="authForm" (ngSubmit)="procesarFormulario()">
             <div class="input-group">
                 <label>Email</label>
-                <input type="email" formControlName="email" placeholder="tu@email.com">
+                <input type="email" formControlName="email" placeholder="tu@email.com" appAutoFocus>
             </div>
 
             <div class="input-group mt-1">

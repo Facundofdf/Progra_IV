@@ -6,27 +6,38 @@
     <h2>🎟️ Gestión de Cupones</h2>
     <p class="subtitulo">Creá códigos de descuento para fidelizar a los clientes o para fechas especiales.</p>
 
-    <form [formGroup]="cuponForm" (ngSubmit)="guardarCupon()" class="panel-form">
+    <!-- Formulario migrado a SIGNAL FORMS (tema 11.c/12): cada input usa
+         [formField] en vez de formControlName, y errors()/valid() vienen
+         directo de los signals del cuponForm. -->
+    <form (ngSubmit)="guardarCupon()" class="panel-form">
         <div class="form-row">
             <div class="input-group">
                 <label>Código del Cupón</label>
-                <input type="text" formControlName="codigo" placeholder="Ej: VERANO20, JUBILADOS50"
-                    style="text-transform: uppercase;">
+                <input type="text" [formField]="cuponForm.campos.codigo" placeholder="Ej: VERANO20, JUBILADOS50"
+                    style="text-transform: uppercase;"
+                    [class.input-error]="cuponForm.campos.codigo.invalid() && cuponForm.campos.codigo.touched()">
+                <small class="error-text" *ngIf="cuponForm.campos.codigo.touched() && cuponForm.campos.codigo.invalid()">
+                    {{ cuponForm.campos.codigo.errors()[0] }}
+                </small>
             </div>
 
             <div class="input-group">
                 <label>Descuento (%)</label>
-                <input type="number" formControlName="porcentaje_descuento" placeholder="Ej: 20">
+                <input type="number" [formField]="cuponForm.campos.porcentaje_descuento" placeholder="Ej: 20"
+                    [class.input-error]="cuponForm.campos.porcentaje_descuento.invalid() && cuponForm.campos.porcentaje_descuento.touched()">
+                <small class="error-text" *ngIf="cuponForm.campos.porcentaje_descuento.touched() && cuponForm.campos.porcentaje_descuento.invalid()">
+                    {{ cuponForm.campos.porcentaje_descuento.errors()[0] }}
+                </small>
             </div>
 
             <div class="input-group">
                 <label>Edad Mínima (Opcional)</label>
-                <input type="number" formControlName="edad_minima" placeholder="Ej: 60 (Vacío = Sin restricción)">
+                <input type="number" [formField]="cuponForm.campos.edad_minima" placeholder="Ej: 60 (Vacío = Sin restricción)">
             </div>
         </div>
 
         <div class="form-actions mt-2">
-            <button type="submit" class="btn-guardar" [disabled]="cuponForm.invalid">
+            <button type="submit" class="btn-guardar" [disabled]="cuponForm.invalid()">
                 Crear Cupón
             </button>
         </div>

@@ -54,14 +54,23 @@ export class AdminPeliculasComponent implements OnInit {
       return;
     }
     
-    const { generos, ...datosPelicula } = this.peliculaForm.value; 
+    const { generos, ...datosPeliculaForm } = this.peliculaForm.value;
     const editId = this.peliculaEditandoId();
+
+    // "en_preventa" antes nunca se seteaba desde este formulario (solo
+    // existía el campo "estado"), así que la columna quedaba huérfana.
+    // La derivamos automáticamente del estado elegido.
+    const datosPelicula = {
+      ...datosPeliculaForm,
+      en_preventa: datosPeliculaForm.estado === 'preventa'
+    };
 
     try {
       let peliculaId = '';
+      const adminActual = await this.supabase.getUsuarioActual();
 
       if (editId) {
-        await this.supabase.actualizarPelicula(editId, datosPelicula);
+        await this.supabase.actualizarPelicula(editId, datosPelicula, adminActual?.id ?? null);
         peliculaId = editId;
         this.mostrarMensaje('Película actualizada con éxito', 'exito');
       } else {

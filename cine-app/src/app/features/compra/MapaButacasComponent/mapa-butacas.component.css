@@ -94,70 +94,77 @@ h2 {
     margin: 0 1rem;
 }
 
-/* DISEÑO DE BUTACA */
-.butaca {
+/* Los estilos visuales "interactivos" de la butaca (hover, disabled, etc.)
+   ahora viven en butaca/butaca.component.css, porque ese estado se
+   extrajo a un componente hijo (ver Input/Output). Acá solo dejamos
+   cuadraditos estáticos de muestra para la leyenda de abajo. */
+.leyenda .butaca {
     width: 25px;
     height: 25px;
     border-radius: 4px;
     border: 1px solid #555;
-    background: #333;
-    color: transparent;
-    font-size: 0.55rem;
-    font-weight: bold;
-    cursor: pointer;
-    transition: 0.2s;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    display: inline-block;
 }
 
-.butaca:hover:not(.ocupada) {
-    background: #555;
-    border-color: #888;
-    color: white;
-    transform: scale(1.1);
-}
-
-/* ESTADOS DE BUTACAS */
-.butaca.libre {
+.leyenda .butaca.libre {
     background: #333;
     border-color: #555;
 }
 
-.butaca.seleccionada {
-    background: #4CAF50 !important;
-    border-color: #388E3C !important;
-    color: white !important;
-    transform: scale(1.1);
-    box-shadow: 0 0 10px rgba(76, 175, 80, 0.5);
+.leyenda .butaca.seleccionada {
+    background: #4CAF50;
+    border-color: #388E3C;
 }
 
-.butaca.ocupada {
-    background: #1a1a1a !important;
-    border-color: #222 !important;
-    cursor: not-allowed;
+.leyenda .butaca.ocupada {
+    background: #1a1a1a;
+    border-color: #222;
     opacity: 0.5;
-    position: relative;
 }
 
-.butaca.ocupada::after {
-    content: '×';
-    position: absolute;
-    color: #f44336;
-    font-size: 1.2rem;
-}
-
-/* REGLAS ESPECIALES DEL TP */
-.butaca.vip {
+.leyenda .butaca.vip {
     border: 2px solid #fbc02d;
     background: rgba(251, 192, 45, 0.1);
 }
 
-.butaca.accesible {
+.leyenda .butaca.accesible {
     background: #2196F3;
     border-color: #1976D2;
-    border-radius: 4px;
     width: 30px;
+}
+
+.aviso-restriccion {
+    background: rgba(255, 152, 0, 0.15);
+    border: 1px solid #ff9800;
+    color: #ffb74d;
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    font-weight: bold;
+}
+
+.aviso-bloqueo {
+    background: rgba(244, 67, 54, 0.15);
+    border: 1px solid #f44336;
+    color: #ff8a80;
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+    font-weight: bold;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem;
+}
+
+.btn-login-inline {
+    background: #fbc02d;
+    color: black;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
 }
 
 /* LEYENDA */

@@ -68,8 +68,19 @@ export class HomeComponent implements OnInit {
     }
   }
 
-  activarAlerta(pelicula: any) {
-    // Más adelante conectaremos esto con la tabla de alertas de la DB y el perfil del usuario
-    alert(`¡Alerta activada para "${pelicula.titulo}"! Te enviaremos un mail cuando salgan las entradas.`);
+  async activarAlerta(pelicula: any) {
+    const usuario = await this.supabase.getUsuarioActual();
+
+    if (!usuario) {
+      alert('Necesitás una cuenta para activar alertas. ¡Registrate o iniciá sesión!');
+      return;
+    }
+
+    try {
+      await this.supabase.crearAlerta(pelicula.id, usuario.id);
+      alert(`¡Listo! Te vamos a avisar cuando se abra la venta de "${pelicula.titulo}". Podés ver todas tus alertas en Mi Perfil > Mis Cosas.`);
+    } catch (error: any) {
+      alert('No pudimos activar la alerta: ' + error.message);
+    }
   }
 }
